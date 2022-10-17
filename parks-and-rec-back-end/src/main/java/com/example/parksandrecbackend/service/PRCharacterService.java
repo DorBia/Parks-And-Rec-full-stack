@@ -3,15 +3,20 @@ package com.example.parksandrecbackend.service;
 import com.example.parksandrecbackend.data.PRCharacter;
 import com.example.parksandrecbackend.exceptions.CharacterNotFoundException;
 import com.example.parksandrecbackend.repository.PRCharacterRepo;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class PRCharacterService {
 
     PRCharacterRepo prCharacterRepo;
+
+    public PRCharacterService(PRCharacterRepo prCharacterRepo) {
+        this.prCharacterRepo = prCharacterRepo;
+    }
 
 //    CREATE
     public void addCharacter(PRCharacter character) {
@@ -20,14 +25,11 @@ public class PRCharacterService {
 
 //    READ
     public PRCharacter getCharacterById(long id) {
+        if(!prCharacterRepo.existsById(id)) throw new CharacterNotFoundException();
         return prCharacterRepo.findById(id).orElseThrow(CharacterNotFoundException::new);
     }
 
-    public List<PRCharacter> getCharacterByName(String name) {
-        return prCharacterRepo.findByName(name).orElseThrow(CharacterNotFoundException::new);
-    }
-
-    public List<PRCharacter> getCharacterByName() {
+    public List<PRCharacter> getAllCharacters() {
         return prCharacterRepo.findAll();
     }
 
@@ -35,12 +37,12 @@ public class PRCharacterService {
     public void updateCharacter(PRCharacter newCharacter, long id){
         if(!prCharacterRepo.existsById(id)) throw new CharacterNotFoundException();
         newCharacter.setId(id);
-        prCharacterRepo.save(newCharacter);
+        prCharacterRepo.saveAndFlush(newCharacter);
     }
 
 
 //    DELETE
-    public void delete(long id){
+    public void deleteCharacter(long id){
         prCharacterRepo.deleteById(id);
     }
 }

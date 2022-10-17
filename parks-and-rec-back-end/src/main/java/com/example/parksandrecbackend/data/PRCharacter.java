@@ -1,11 +1,15 @@
 package com.example.parksandrecbackend.data;
 
+import com.fasterxml.jackson.annotation.*;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "prcharacter")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+
 public class PRCharacter {
 
     @Id
@@ -28,14 +32,26 @@ public class PRCharacter {
     private String actorsName;
 
 
+//    @ManyToMany(fetch = FetchType.LAZY,
+//            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
+//                    CascadeType.REFRESH})
+//    @JsonManagedReference
+//    @JsonIgnoreProperties("characters")
+    @JsonBackReference
     @ManyToMany()
     @JoinTable (
             name="episodes_appearance",
-            joinColumns = @JoinColumn(name="characters_id", referencedColumnName = "id"),
+            joinColumns = @JoinColumn(name="characters_id"),
             inverseJoinColumns = @JoinColumn(name="episode_id")
     )
     private List<Episode> episodes = new ArrayList<>();
 
+//    @ManyToMany(fetch = FetchType.LAZY,
+//            cascade = {CascadeType.DETACH, CascadeType.MERGE,
+//                    CascadeType.PERSIST, CascadeType.REFRESH})
+//    @JsonManagedReference
+//    @JsonIgnoreProperties("characters")
+    @JsonBackReference
     @ManyToMany()
     @JoinTable (
             name="seasons_appearance",

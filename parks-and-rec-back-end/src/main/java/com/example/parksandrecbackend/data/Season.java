@@ -1,10 +1,14 @@
 package com.example.parksandrecbackend.data;
 
+import com.fasterxml.jackson.annotation.*;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name="Season")
+@Table(name="season")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+
 public class Season {
 
     @Id
@@ -14,11 +18,40 @@ public class Season {
 
     private int seasonsNumber;
 
-    @ManyToMany(mappedBy = "seasons")
-    private List<Episode> episodesInSeason;
+//    @ManyToMany(fetch = FetchType.LAZY,
+//            cascade = {CascadeType.DETACH, CascadeType.MERGE,
+//                    CascadeType.PERSIST, CascadeType.REFRESH})
+//    @JoinTable (
+//            name="episodes_in_season",
+//            joinColumns = @JoinColumn(name="season_id"),
+//            inverseJoinColumns = @JoinColumn(name="episode_id")
+//    )
 
+    @JsonManagedReference
+//    @JsonBackReference
+//    @JsonIgnoreProperties("seasons")
     @ManyToMany(mappedBy = "seasons")
-    private List<PRCharacter> charactersInSeason;
+    private List<Episode> episodes;
+
+//    @ManyToMany(fetch = FetchType.LAZY,
+//            cascade = {CascadeType.DETACH, CascadeType.MERGE,
+//                    CascadeType.PERSIST, CascadeType.REFRESH})
+//    @JoinTable (
+//            name="seasons_appearance",
+//            joinColumns = @JoinColumn(name="season_id"),
+//            inverseJoinColumns = @JoinColumn(name="character_id")
+//    )
+    @JsonManagedReference
+//    @JsonBackReference
+//    @JsonIgnoreProperties("seasons")
+    @ManyToMany(mappedBy = "seasons")
+    private List<PRCharacter> characters;
+
+    public Season(int seasonsNumber, List<Episode> episodes, List<PRCharacter> characters) {
+        this.seasonsNumber = seasonsNumber;
+        this.episodes = episodes;
+        this.characters = characters;
+    }
 
     public Season(int seasonsNumber) {
         this.seasonsNumber = seasonsNumber;
@@ -26,6 +59,14 @@ public class Season {
 
     public Season() {
 
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public int getSeasonsNumber() {
@@ -37,42 +78,34 @@ public class Season {
     }
 
     public List<Episode> getEpisodes() {
-        return episodesInSeason;
+        return episodes;
+    }
+
+    public void setEpisodes(List<Episode> episodes) {
+        this.episodes = episodes;
     }
 
     public List<PRCharacter> getCharacters() {
-        return charactersInSeason;
+        return characters;
     }
 
-    public List<Episode> getEpisodesInSeason() {
-        return episodesInSeason;
-    }
-
-    public void setEpisodesInSeason(List<Episode> episodesInSeason) {
-        this.episodesInSeason = episodesInSeason;
-    }
-
-    public List<PRCharacter> getCharactersInSeason() {
-        return charactersInSeason;
-    }
-
-    public void setCharactersInSeason(List<PRCharacter> charactersInSeason) {
-        this.charactersInSeason = charactersInSeason;
+    public void setCharacters(List<PRCharacter> characters) {
+        this.characters = characters;
     }
 
 //    public void addCharacters(PRCharacter character) {
-//        charactersInSeason.add(character);
+//        characters.add(character);
 //    }
 //    public void addEpisodes(Episode episode) {
-//        episodesInSeason.add(episode);
+//        episodes.add(episode);
 //    }
 
     @Override
     public String toString() {
         return "Season{" +
                 "seasonsNumber=" + seasonsNumber +
-                ", episodes=" + episodesInSeason +
-                ", charactersInSeason=" + charactersInSeason +
+                ", episodes=" + episodes +
+                ", characters=" + characters +
                 '}';
     }
 }
