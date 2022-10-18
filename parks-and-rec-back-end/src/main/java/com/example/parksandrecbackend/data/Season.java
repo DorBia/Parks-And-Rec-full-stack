@@ -7,7 +7,7 @@ import java.util.List;
 
 @Entity
 @Table(name="season")
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 
 public class Season {
 
@@ -27,11 +27,12 @@ public class Season {
 //            inverseJoinColumns = @JoinColumn(name="episode_id")
 //    )
 
-    @JsonManagedReference
+//    @JsonManagedReference
 //    @JsonBackReference
+//    @JsonIgnore()
 //    @JsonIgnoreProperties("seasons")
-    @ManyToMany(mappedBy = "seasons")
-    private List<Episode> episodes;
+    @ManyToMany(mappedBy = "seasonsEpisode")
+    private List<Episode> episodesSeason;
 
 //    @ManyToMany(fetch = FetchType.LAZY,
 //            cascade = {CascadeType.DETACH, CascadeType.MERGE,
@@ -41,16 +42,18 @@ public class Season {
 //            joinColumns = @JoinColumn(name="season_id"),
 //            inverseJoinColumns = @JoinColumn(name="character_id")
 //    )
-    @JsonManagedReference
+//    @JsonManagedReference
 //    @JsonBackReference
 //    @JsonIgnoreProperties("seasons")
-    @ManyToMany(mappedBy = "seasons")
-    private List<PRCharacter> characters;
+//    @JsonIgnore()
+    @JsonIgnoreProperties(value = {"episodesCharacter", "seasonsCharacter"})
+    @ManyToMany(mappedBy = "seasonsCharacter")
+    private List<PRCharacter> charactersSeason;
 
     public Season(int seasonsNumber, List<Episode> episodes, List<PRCharacter> characters) {
         this.seasonsNumber = seasonsNumber;
-        this.episodes = episodes;
-        this.characters = characters;
+        this.episodesSeason = episodes;
+        this.charactersSeason = characters;
     }
 
     public Season(int seasonsNumber) {
@@ -77,23 +80,23 @@ public class Season {
         this.seasonsNumber = seasonsNumber;
     }
 
-    public List<Episode> getEpisodes() {
-        return episodes;
+    public List<Episode> getEpisodesSeason() {
+        return episodesSeason;
     }
 
-    public void setEpisodes(List<Episode> episodes) {
-        this.episodes = episodes;
+    public void setEpisodesSeason(List<Episode> episodesSeason) {
+        this.episodesSeason = episodesSeason;
     }
 
-    public List<PRCharacter> getCharacters() {
-        return characters;
+    public List<PRCharacter> getCharactersSeason() {
+        return charactersSeason;
     }
 
-    public void setCharacters(List<PRCharacter> characters) {
-        this.characters = characters;
+    public void setCharactersSeason(List<PRCharacter> charactersSeason) {
+        this.charactersSeason = charactersSeason;
     }
 
-//    public void addCharacters(PRCharacter character) {
+    //    public void addCharacters(PRCharacter character) {
 //        characters.add(character);
 //    }
 //    public void addEpisodes(Episode episode) {
@@ -104,8 +107,8 @@ public class Season {
     public String toString() {
         return "Season{" +
                 "seasonsNumber=" + seasonsNumber +
-                ", episodes=" + episodes +
-                ", characters=" + characters +
+                ", episodes=" + episodesSeason +
+                ", characters=" + charactersSeason +
                 '}';
     }
 }

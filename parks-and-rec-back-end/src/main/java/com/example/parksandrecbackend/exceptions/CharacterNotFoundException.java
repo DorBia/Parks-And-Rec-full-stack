@@ -5,9 +5,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.persistence.EntityNotFoundException;
 
-@ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "character with that ID does not exist")
+//@ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "character with that ID does not exist")
 public class CharacterNotFoundException extends EntityNotFoundException {
-//    public CharacterNotFoundException() {
-//        super("Character has not been found");
-//    }
+    public CharacterNotFoundException() {
+        super("Character has not been found");
+    }
 }

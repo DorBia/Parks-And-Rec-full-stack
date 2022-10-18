@@ -20,10 +20,10 @@ public class PRCharacterController {
         this.prCharacterService = prCharacterService;
     }
 
-//    @ExceptionHandler
-//    public String handleException(CharacterNotFoundException exception) {
-//        return exception.getMessage();
-//    }
+    @ExceptionHandler
+    public String handleException(CharacterNotFoundException exception) {
+        return exception.getMessage();
+    }
 
 
     // CREATE

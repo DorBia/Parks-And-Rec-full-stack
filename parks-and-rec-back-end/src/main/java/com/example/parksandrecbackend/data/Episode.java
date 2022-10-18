@@ -8,7 +8,7 @@ import java.util.List;
 
 @Entity
 @Table(name="episode")
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Episode {
 
     @Id
@@ -23,15 +23,16 @@ public class Episode {
 //            cascade = {CascadeType.DETACH, CascadeType.MERGE,
 //                    CascadeType.PERSIST, CascadeType.REFRESH})
 //    @JsonManagedReference
-//    @JsonIgnoreProperties("episodes")
-    @JsonBackReference
+//    @JsonIgnore()
+//    @JsonBackReference
+    @JsonIgnoreProperties(value = {"episodesSeason", "charactersSeason"})
     @ManyToMany()
     @JoinTable (
             name="episodes_in_season",
             joinColumns = @JoinColumn(name="episode_id"),
             inverseJoinColumns = @JoinColumn(name="season_id")
     )
-    private List<Season> seasons = new ArrayList<>();
+    private List<Season> seasonsEpisode = new ArrayList<>();
 
 //    @ManyToMany(fetch = FetchType.LAZY,
 //            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
@@ -42,9 +43,10 @@ public class Episode {
 //            inverseJoinColumns = @JoinColumn(name="episode_id")
 //    )
 //    @JsonBackReference
-//    @JsonIgnoreProperties("episodes")
-    @JsonManagedReference
-    @ManyToMany(mappedBy="episodes")
+//    @JsonIgnore()
+//    @JsonManagedReference
+    @JsonIgnoreProperties(value = {"episodesCharacter", "seasonsCharacter"})
+    @ManyToMany(mappedBy="episodesCharacter")
     private List<PRCharacter> charactersInEpisode;
 
 
@@ -100,12 +102,12 @@ public class Episode {
         this.episodesDescription = episodesDescription;
     }
 
-    public List<Season> getSeasons() {
-        return seasons;
+    public List<Season> getSeasonsEpisode() {
+        return seasonsEpisode;
     }
 
-    public void setSeasons(List<Season> seasons) {
-        this.seasons = seasons;
+    public void setSeasonsEpisode(List<Season> seasonsEpisode) {
+        this.seasonsEpisode = seasonsEpisode;
     }
 
     public List<PRCharacter> getCharactersInEpisode() {
@@ -120,7 +122,7 @@ public class Episode {
 //        charactersInEpisode.add(character);
 //    }
     public void addToSeasons(Season season) {
-        seasons.add(season);
+        seasonsEpisode.add(season);
     }
 
     @Override

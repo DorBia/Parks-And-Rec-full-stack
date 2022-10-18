@@ -8,8 +8,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "prcharacter")
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class PRCharacter {
 
     @Id
@@ -36,29 +35,34 @@ public class PRCharacter {
 //            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
 //                    CascadeType.REFRESH})
 //    @JsonManagedReference
+//    @JsonIgnore()
 //    @JsonIgnoreProperties("characters")
-    @JsonBackReference
+//    @JsonBackReference
+
+    @JsonIgnoreProperties(value = {"charactersInEpisode", "seasonsEpisode"})
     @ManyToMany()
     @JoinTable (
             name="episodes_appearance",
             joinColumns = @JoinColumn(name="characters_id"),
             inverseJoinColumns = @JoinColumn(name="episode_id")
     )
-    private List<Episode> episodes = new ArrayList<>();
+    private List<Episode> episodesCharacter = new ArrayList<>();
 
 //    @ManyToMany(fetch = FetchType.LAZY,
 //            cascade = {CascadeType.DETACH, CascadeType.MERGE,
 //                    CascadeType.PERSIST, CascadeType.REFRESH})
 //    @JsonManagedReference
 //    @JsonIgnoreProperties("characters")
-    @JsonBackReference
+//    @JsonIgnore()
+//    @JsonBackReference
+    @JsonIgnoreProperties(value = {"charactersSeason", "episodesSeason"})
     @ManyToMany()
     @JoinTable (
             name="seasons_appearance",
             joinColumns = @JoinColumn(name="character_id"),
             inverseJoinColumns = @JoinColumn(name="season_id")
     )
-    private List<Season> seasons = new ArrayList<>();
+    private List<Season> seasonsCharacter = new ArrayList<>();
 
 
     public PRCharacter(String charactersName, int age, String charactersDescription, String charactersPictureLink, String actorsName) {
@@ -78,7 +82,6 @@ public class PRCharacter {
     public PRCharacter() {
 
     }
-
 
     public long getId() {
         return id;
@@ -128,27 +131,27 @@ public class PRCharacter {
         this.actorsName = actorsName;
     }
 
-    public List<Episode> getEpisodes() {
-        return episodes;
+    public List<Episode> getEpisodesCharacter() {
+        return episodesCharacter;
     }
 
-    public void setEpisodes(List<Episode> episodes) {
-        this.episodes = episodes;
+    public void setEpisodesCharacter(List<Episode> episodesCharacter) {
+        this.episodesCharacter = episodesCharacter;
     }
 
-    public List<Season> getSeasons() {
-        return seasons;
+    public List<Season> getSeasonsCharacter() {
+        return seasonsCharacter;
     }
 
-    public void setSeasons(List<Season> seasons) {
-        this.seasons = seasons;
+    public void setSeasonsCharacter(List<Season> seasonsCharacter) {
+        this.seasonsCharacter = seasonsCharacter;
     }
 
     public void addToEpisodes(Episode episode) {
-        episodes.add(episode);
+        episodesCharacter.add(episode);
     }
     public void addToSeasons(Season season) {
-        seasons.add(season);
+        seasonsCharacter.add(season);
     }
 
 
@@ -161,8 +164,8 @@ public class PRCharacter {
                 ", charactersDescription='" + charactersDescription + '\'' +
                 ", charactersPictureLink='" + charactersPictureLink + '\'' +
                 ", actorsName='" + actorsName + '\'' +
-                ", episodes=" + episodes +
-                ", seasons=" + seasons +
+                ", episodes=" + episodesCharacter +
+                ", seasons=" + seasonsCharacter +
                 '}';
     }
 }
