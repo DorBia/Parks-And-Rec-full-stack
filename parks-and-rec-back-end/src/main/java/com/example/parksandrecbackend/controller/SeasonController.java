@@ -7,10 +7,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
 @RequestMapping("/season")
+@CrossOrigin("http://localhost:3000")
 public class SeasonController {
 
     SeasonService seasonService;
@@ -50,7 +52,9 @@ public class SeasonController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteSeason(@PathVariable long id){
+    @Transactional
+    public ResponseEntity<Void>  deleteSeason(@PathVariable long id){
         seasonService.deleteSeason(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

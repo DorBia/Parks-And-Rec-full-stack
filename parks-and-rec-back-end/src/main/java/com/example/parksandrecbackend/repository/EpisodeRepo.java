@@ -6,5 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface EpisodeRepo extends CrudRepository<Episode, Long>, JpaRepository<Episode, Long> {
+public interface EpisodeRepo extends JpaRepository<Episode, Long> {
 }

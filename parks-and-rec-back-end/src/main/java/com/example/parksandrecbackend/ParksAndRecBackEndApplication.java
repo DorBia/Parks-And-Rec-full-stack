@@ -43,9 +43,12 @@ public class ParksAndRecBackEndApplication {
         episode2.addToSeasons(season2);
 
         leslie.addToSeasons(season1);
+        leslie.addToSeasons(season2);
         tom.addToSeasons(season2);
         leslie.addToEpisodes(episode1);
         leslie.addToEpisodes(episode2);
+        tom.addToEpisodes(episode1);
+        tom.addToEpisodes(episode2);
 
         episode2.setCharactersInEpisode(List.of(tom));
 //        season2.addEpisodes(episode1);

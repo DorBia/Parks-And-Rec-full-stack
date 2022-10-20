@@ -42,6 +42,9 @@ public class SeasonService {
 
     //    DELETE
     public void deleteSeason(long id){
+        Season season = seasonRepo.findById(id).orElseThrow(SeasonNotFoundException::new);
+        season.removeFromSeasonCharacters(season);
+        season.removeFromSeasonEpisodes(season);
         seasonRepo.deleteById(id);
     }
 }

@@ -33,6 +33,10 @@ public class PRCharacterService {
         return prCharacterRepo.findAll();
     }
 
+    public List<PRCharacter> getAllByName(String charactersName) {
+        return prCharacterRepo.getAllByCharactersNameIgnoreCase(charactersName);
+    }
+
 //    UPDATE
     public void updateCharacter(PRCharacter newCharacter, long id){
         if(!prCharacterRepo.existsById(id)) throw new CharacterNotFoundException();

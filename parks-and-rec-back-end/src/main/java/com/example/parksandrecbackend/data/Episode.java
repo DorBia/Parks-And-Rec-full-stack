@@ -1,13 +1,13 @@
 package com.example.parksandrecbackend.data;
 
 import com.fasterxml.jackson.annotation.*;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name="episode")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Episode {
 
@@ -19,12 +19,6 @@ public class Episode {
     private int episodesLengthMinutes;
     private String episodesDescription;
 
-//    @ManyToMany(fetch = FetchType.LAZY,
-//            cascade = {CascadeType.DETACH, CascadeType.MERGE,
-//                    CascadeType.PERSIST, CascadeType.REFRESH})
-//    @JsonManagedReference
-//    @JsonIgnore()
-//    @JsonBackReference
     @JsonIgnoreProperties(value = {"episodesSeason", "charactersSeason"})
     @ManyToMany()
     @JoinTable (
@@ -34,17 +28,7 @@ public class Episode {
     )
     private List<Season> seasonsEpisode = new ArrayList<>();
 
-//    @ManyToMany(fetch = FetchType.LAZY,
-//            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
-//                    CascadeType.REFRESH})
-//    @JoinTable (
-//            name="episodes_appearance",
-//            joinColumns = @JoinColumn(name="characters_id", referencedColumnName = "characterId"),
-//            inverseJoinColumns = @JoinColumn(name="episode_id")
-//    )
-//    @JsonBackReference
-//    @JsonIgnore()
-//    @JsonManagedReference
+
     @JsonIgnoreProperties(value = {"episodesCharacter", "seasonsCharacter"})
     @ManyToMany(mappedBy="episodesCharacter")
     private List<PRCharacter> charactersInEpisode;
@@ -118,11 +102,18 @@ public class Episode {
         this.charactersInEpisode = charactersInEpisode;
     }
 
-    //    public void addCharacters(PRCharacter character) {
-//        charactersInEpisode.add(character);
-//    }
     public void addToSeasons(Season season) {
         seasonsEpisode.add(season);
+    }
+
+    public void removeFromSeasons(Season season) {
+        seasonsEpisode.remove(season);
+    }
+
+    public void removeFromEpisodeCharacters(Episode episode) {
+        for(PRCharacter character : charactersInEpisode){
+            character.removeFromEpisodes(episode);
+        };
     }
 
     @Override

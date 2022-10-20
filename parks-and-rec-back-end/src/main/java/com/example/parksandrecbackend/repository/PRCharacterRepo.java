@@ -11,6 +11,8 @@ import java.util.Optional;
 @Repository
 public interface PRCharacterRepo extends JpaRepository<PRCharacter, Long> {
 
+    List<PRCharacter> getAllByCharactersNameIgnoreCase(String charactersName);
+
 //    @Query(value = "SELECT * FROM prcharacter WHERE name = ''", nativeQuery = true)
 //    Optional<List<PRCharacter>> findByName(String name);
 }

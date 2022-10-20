@@ -7,10 +7,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
 @RequestMapping("/character")
+@CrossOrigin("http://localhost:3000")
 public class PRCharacterController {
 
 
@@ -39,9 +41,14 @@ public class PRCharacterController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<PRCharacter>> getCharacters() {
+    public ResponseEntity<List<PRCharacter>> getCharacters(@RequestParam(required = false) String name) {
+        if(name != null) {
+            return new ResponseEntity<>(prCharacterService.getAllByName(name), HttpStatus.FOUND);
+        }
         return new ResponseEntity<>(prCharacterService.getAllCharacters(), HttpStatus.FOUND);
+
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<PRCharacter> updateCharacter(@RequestBody PRCharacter newCharacter, @PathVariable long id){
@@ -51,8 +58,10 @@ public class PRCharacterController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteCharacter(@PathVariable long id){
+    @Transactional
+    public ResponseEntity<Void> deleteCharacter(@PathVariable long id){
         prCharacterService.deleteCharacter(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

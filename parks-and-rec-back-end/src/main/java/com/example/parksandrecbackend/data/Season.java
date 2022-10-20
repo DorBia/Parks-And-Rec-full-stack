@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name="season")
+//@Table(name="season")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 
 public class Season {
@@ -18,34 +18,10 @@ public class Season {
 
     private int seasonsNumber;
 
-//    @ManyToMany(fetch = FetchType.LAZY,
-//            cascade = {CascadeType.DETACH, CascadeType.MERGE,
-//                    CascadeType.PERSIST, CascadeType.REFRESH})
-//    @JoinTable (
-//            name="episodes_in_season",
-//            joinColumns = @JoinColumn(name="season_id"),
-//            inverseJoinColumns = @JoinColumn(name="episode_id")
-//    )
-
-//    @JsonManagedReference
-//    @JsonBackReference
-//    @JsonIgnore()
-//    @JsonIgnoreProperties("seasons")
+    @JsonIgnoreProperties(value = {"seasonsEpisode", "charactersInEpisode"})
     @ManyToMany(mappedBy = "seasonsEpisode")
     private List<Episode> episodesSeason;
 
-//    @ManyToMany(fetch = FetchType.LAZY,
-//            cascade = {CascadeType.DETACH, CascadeType.MERGE,
-//                    CascadeType.PERSIST, CascadeType.REFRESH})
-//    @JoinTable (
-//            name="seasons_appearance",
-//            joinColumns = @JoinColumn(name="season_id"),
-//            inverseJoinColumns = @JoinColumn(name="character_id")
-//    )
-//    @JsonManagedReference
-//    @JsonBackReference
-//    @JsonIgnoreProperties("seasons")
-//    @JsonIgnore()
     @JsonIgnoreProperties(value = {"episodesCharacter", "seasonsCharacter"})
     @ManyToMany(mappedBy = "seasonsCharacter")
     private List<PRCharacter> charactersSeason;
@@ -96,12 +72,17 @@ public class Season {
         this.charactersSeason = charactersSeason;
     }
 
-    //    public void addCharacters(PRCharacter character) {
-//        characters.add(character);
-//    }
-//    public void addEpisodes(Episode episode) {
-//        episodes.add(episode);
-//    }
+    public void removeFromSeasonCharacters(Season season) {
+        for(PRCharacter character : charactersSeason){
+            character.removeFromSeasons(season);
+        };
+    }
+
+    public void removeFromSeasonEpisodes(Season season) {
+        for(Episode episode : episodesSeason){
+            episode.removeFromSeasons(season);
+        };
+    }
 
     @Override
     public String toString() {

@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "prcharacter")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class PRCharacter {
 
@@ -31,14 +30,6 @@ public class PRCharacter {
     private String actorsName;
 
 
-//    @ManyToMany(fetch = FetchType.LAZY,
-//            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
-//                    CascadeType.REFRESH})
-//    @JsonManagedReference
-//    @JsonIgnore()
-//    @JsonIgnoreProperties("characters")
-//    @JsonBackReference
-
     @JsonIgnoreProperties(value = {"charactersInEpisode", "seasonsEpisode"})
     @ManyToMany()
     @JoinTable (
@@ -48,13 +39,7 @@ public class PRCharacter {
     )
     private List<Episode> episodesCharacter = new ArrayList<>();
 
-//    @ManyToMany(fetch = FetchType.LAZY,
-//            cascade = {CascadeType.DETACH, CascadeType.MERGE,
-//                    CascadeType.PERSIST, CascadeType.REFRESH})
-//    @JsonManagedReference
-//    @JsonIgnoreProperties("characters")
-//    @JsonIgnore()
-//    @JsonBackReference
+
     @JsonIgnoreProperties(value = {"charactersSeason", "episodesSeason"})
     @ManyToMany()
     @JoinTable (
@@ -152,6 +137,14 @@ public class PRCharacter {
     }
     public void addToSeasons(Season season) {
         seasonsCharacter.add(season);
+    }
+
+    public void removeFromEpisodes(Episode episode) {
+        episodesCharacter.remove(episode);
+    }
+
+    public void removeFromSeasons(Season season) {
+        seasonsCharacter.remove(season);
     }
 
 

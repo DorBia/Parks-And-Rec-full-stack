@@ -8,10 +8,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
 @RequestMapping("/episode")
+@CrossOrigin("http://localhost:3000")
 public class EpisodeController {
 
     EpisodeService episodeService;
@@ -50,8 +52,10 @@ public class EpisodeController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteEpisode(@PathVariable long id){
+    @Transactional
+    public ResponseEntity<Void> deleteEpisode(@PathVariable long id){
         episodeService.deleteEpisode(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }
