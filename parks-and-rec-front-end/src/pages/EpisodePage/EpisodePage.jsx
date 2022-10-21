@@ -1,3 +1,5 @@
+// import axios from "axios";
+// import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
 const EpisodePage = () => {
@@ -14,6 +16,7 @@ const EpisodePage = () => {
     {seasonJsx}
 </div>
   )
+
 }
 
 export default EpisodePage

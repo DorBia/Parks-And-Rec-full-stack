@@ -25,8 +25,8 @@ public class ParksAndRecBackEndApplication {
         SeasonRepo seasonRepo = configurableApplicationContext.getBean(SeasonRepo.class);
 
 
-        PRCharacter leslie = new PRCharacter("Leslie", 45, "Main character", "some link", "Some Name");
-        PRCharacter tom = new PRCharacter("Tom", 35, "Funny guy", "some link", "Some Other");
+        PRCharacter leslie = new PRCharacter("Leslie", 45, "Main character", "https://media.glamour.com/photos/569580c35fff94d44eec3cdc/master/w_1600%2Cc_limit/entertainment-2015-01-leslie-knope-final-season-main.jpg", "Some Name");
+        PRCharacter tom = new PRCharacter("Tom", 35, "Funny guy", "https://hips.hearstapps.com/esq.h-cdn.co/assets/15/09/5.jpg", "Some Other");
         PRCharacter tammy = new PRCharacter("Tammy", "Ron's ex", "No idea");
         List<PRCharacter> characters = Arrays.asList(leslie, tom, tammy);
 

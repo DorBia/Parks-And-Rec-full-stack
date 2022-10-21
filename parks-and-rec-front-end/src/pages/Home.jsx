@@ -1,9 +1,8 @@
-// import NavBar from "../components/NavBar/NavBar"
+// import axios from "axios";
+// import { useEffect, useState } from "react";
 
 const Home = () => {
-  return (
-    <div>Hello</div>
-  )
+  <div>Welcome</div>
 }
 
 export default Home

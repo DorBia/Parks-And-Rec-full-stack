@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 import "./NavBar.scss"
 
-const NavBar = () => {
+const NavBar = ({seasons}) => {
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
       <Container>
@@ -15,20 +15,14 @@ const NavBar = () => {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
-            <NavDropdown title="Seasons" id="collasible-nav-dropdown">
-              <NavDropdown.Item as={Link} to="/season/1">Season 1</NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/season/2">Season 2</NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/season/3">Season 3</NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/season/4">Season 4</NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/season/5">Season 5</NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/season/6">Season 6</NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/season/7">Season 7</NavDropdown.Item>
+            <NavDropdown title="Seasons" id="collapsible-nav-dropdown">
+            {seasons.map(season => <NavDropdown.Item as={Link} to={"/season/" + season.id} key={season.id}>{season.seasonsNumber}</NavDropdown.Item>)}
             </NavDropdown>
-            <Nav.Link to="">Episodes</Nav.Link>
-            <Nav.Link to="">Characters</Nav.Link>
+            <Nav.Link as={Link} to="/episodes">Episodes</Nav.Link>
+            <Nav.Link as={Link} to="/characters">Characters</Nav.Link>
           </Nav>
           <Nav>
-          <Nav.Link className="nav__link" to=""> <Button variant="outline-light" className="log-in">Log In</Button>
+          <Nav.Link className="nav__link" as={Link} to="/login"> <Button variant="outline-light" className="log-in">Log In</Button>
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>

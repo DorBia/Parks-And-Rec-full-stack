@@ -4,6 +4,7 @@ import com.example.parksandrecbackend.data.PRCharacter;
 import com.example.parksandrecbackend.exceptions.CharacterNotFoundException;
 import com.example.parksandrecbackend.repository.PRCharacterRepo;
 import net.bytebuddy.implementation.bytecode.Throw;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,7 +31,7 @@ public class PRCharacterService {
     }
 
     public List<PRCharacter> getAllCharacters() {
-        return prCharacterRepo.findAll();
+        return prCharacterRepo.findAll(Sort.by("charactersName"));
     }
 
     public List<PRCharacter> getAllByName(String charactersName) {
