@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 //@Table(name="season")
@@ -15,25 +16,32 @@ public class Season {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-
+    @Column(name = "number", nullable = false)
     private int seasonsNumber;
 
+    @Column(name = "description", nullable = false)
+    private String seasonsDescription;
+
+    @Column(name = "picture")
+    private String seasonsPicture;
+
     @JsonIgnoreProperties(value = {"seasonsEpisode", "charactersInEpisode"})
-    @ManyToMany(mappedBy = "seasonsEpisode")
-    private List<Episode> episodesSeason;
+    @OneToMany(mappedBy = "seasonsEpisode")
+    private Set<Episode> episodesSeason;
 
     @JsonIgnoreProperties(value = {"episodesCharacter", "seasonsCharacter"})
     @ManyToMany(mappedBy = "seasonsCharacter")
-    private List<PRCharacter> charactersSeason;
+    private Set<PRCharacter> charactersSeason;
 
-    public Season(int seasonsNumber, List<Episode> episodes, List<PRCharacter> characters) {
+    public Season(int seasonsNumber, String seasonsDescription, String seasonsPicture) {
         this.seasonsNumber = seasonsNumber;
-        this.episodesSeason = episodes;
-        this.charactersSeason = characters;
+        this.seasonsDescription = seasonsDescription;
+        this.seasonsPicture = seasonsPicture;
     }
 
-    public Season(int seasonsNumber) {
+    public Season(int seasonsNumber, String seasonsDescription) {
         this.seasonsNumber = seasonsNumber;
+        this.seasonsDescription = seasonsDescription;
     }
 
     public Season() {
@@ -56,20 +64,36 @@ public class Season {
         this.seasonsNumber = seasonsNumber;
     }
 
-    public List<Episode> getEpisodesSeason() {
+    public Set<Episode> getEpisodesSeason() {
         return episodesSeason;
     }
 
-    public void setEpisodesSeason(List<Episode> episodesSeason) {
+    public void setEpisodesSeason(Set<Episode> episodesSeason) {
         this.episodesSeason = episodesSeason;
     }
 
-    public List<PRCharacter> getCharactersSeason() {
+    public Set<PRCharacter> getCharactersSeason() {
         return charactersSeason;
     }
 
-    public void setCharactersSeason(List<PRCharacter> charactersSeason) {
+    public void setCharactersSeason(Set<PRCharacter> charactersSeason) {
         this.charactersSeason = charactersSeason;
+    }
+
+    public String getSeasonsDescription() {
+        return seasonsDescription;
+    }
+
+    public void setSeasonsDescription(String seasonsDescription) {
+        this.seasonsDescription = seasonsDescription;
+    }
+
+    public String getSeasonsPicture() {
+        return seasonsPicture;
+    }
+
+    public void setSeasonsPicture(String seasonsPicture) {
+        this.seasonsPicture = seasonsPicture;
     }
 
     public void removeFromSeasonCharacters(Season season) {
@@ -78,9 +102,9 @@ public class Season {
         };
     }
 
-    public void removeFromSeasonEpisodes(Season season) {
+    public void removeFromSeasonEpisodes() {
         for(Episode episode : episodesSeason){
-            episode.removeFromSeasons(season);
+            episode.setSeasonsEpisode(null);
         };
     }
 

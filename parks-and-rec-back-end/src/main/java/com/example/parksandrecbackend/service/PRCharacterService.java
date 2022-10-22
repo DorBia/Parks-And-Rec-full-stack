@@ -1,5 +1,6 @@
 package com.example.parksandrecbackend.service;
 
+import com.example.parksandrecbackend.data.Episode;
 import com.example.parksandrecbackend.data.PRCharacter;
 import com.example.parksandrecbackend.exceptions.CharacterNotFoundException;
 import com.example.parksandrecbackend.repository.PRCharacterRepo;
@@ -44,6 +45,13 @@ public class PRCharacterService {
         newCharacter.setId(id);
         prCharacterRepo.saveAndFlush(newCharacter);
     }
+
+//    public void addCharacterToEpisode(PRCharacter character, long id, Episode episode){
+//        if(!prCharacterRepo.existsById(id)) throw new CharacterNotFoundException();
+//        character.setId(id);
+//        character.addToEpisodes(episode);
+//        prCharacterRepo.addToEpisode(episode);
+//    }
 
 
 //    DELETE

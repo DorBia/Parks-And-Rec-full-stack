@@ -6,7 +6,6 @@ import com.example.parksandrecbackend.repository.SeasonRepo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class SeasonService {
@@ -44,7 +43,7 @@ public class SeasonService {
     public void deleteSeason(long id){
         Season season = seasonRepo.findById(id).orElseThrow(SeasonNotFoundException::new);
         season.removeFromSeasonCharacters(season);
-        season.removeFromSeasonEpisodes(season);
+        season.removeFromSeasonEpisodes();
         seasonRepo.deleteById(id);
     }
 }

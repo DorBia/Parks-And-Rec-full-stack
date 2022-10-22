@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
@@ -37,7 +39,7 @@ public class PRCharacter {
             joinColumns = @JoinColumn(name="characters_id"),
             inverseJoinColumns = @JoinColumn(name="episode_id")
     )
-    private List<Episode> episodesCharacter = new ArrayList<>();
+    private Set<Episode> episodesCharacter = new HashSet<>();
 
 
     @JsonIgnoreProperties(value = {"charactersSeason", "episodesSeason"})
@@ -47,7 +49,7 @@ public class PRCharacter {
             joinColumns = @JoinColumn(name="character_id"),
             inverseJoinColumns = @JoinColumn(name="season_id")
     )
-    private List<Season> seasonsCharacter = new ArrayList<>();
+    private Set<Season> seasonsCharacter = new HashSet<>();
 
 
     public PRCharacter(String charactersName, int age, String charactersDescription, String charactersPictureLink, String actorsName) {
@@ -116,19 +118,19 @@ public class PRCharacter {
         this.actorsName = actorsName;
     }
 
-    public List<Episode> getEpisodesCharacter() {
+    public Set<Episode> getEpisodesCharacter() {
         return episodesCharacter;
     }
 
-    public void setEpisodesCharacter(List<Episode> episodesCharacter) {
+    public void setEpisodesCharacter(Set<Episode> episodesCharacter) {
         this.episodesCharacter = episodesCharacter;
     }
 
-    public List<Season> getSeasonsCharacter() {
+    public Set<Season> getSeasonsCharacter() {
         return seasonsCharacter;
     }
 
-    public void setSeasonsCharacter(List<Season> seasonsCharacter) {
+    public void setSeasonsCharacter(Set<Season> seasonsCharacter) {
         this.seasonsCharacter = seasonsCharacter;
     }
 

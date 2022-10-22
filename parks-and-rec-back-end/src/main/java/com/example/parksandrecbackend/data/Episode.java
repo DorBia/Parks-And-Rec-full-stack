@@ -6,6 +6,7 @@ import org.hibernate.annotations.Cascade;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
@@ -14,30 +15,47 @@ public class Episode {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
+    @Column(name = "name", nullable = false)
     private String episodesName;
-    private int episodeNumber;
+
+    @Column(name = "number", nullable = false)
+    private int episodesNumber;
+
+    @Column(name = "length", nullable = false)
     private int episodesLengthMinutes;
+
+    @Column(name = "description", nullable = false)
     private String episodesDescription;
 
+    @Column(name = "picture")
+    private String episodesPicture;
+
     @JsonIgnoreProperties(value = {"episodesSeason", "charactersSeason"})
-    @ManyToMany()
+    @ManyToOne()
     @JoinTable (
             name="episodes_in_season",
             joinColumns = @JoinColumn(name="episode_id"),
             inverseJoinColumns = @JoinColumn(name="season_id")
     )
-    private List<Season> seasonsEpisode = new ArrayList<>();
+    private Season seasonsEpisode;
 
 
     @JsonIgnoreProperties(value = {"episodesCharacter", "seasonsCharacter"})
     @ManyToMany(mappedBy="episodesCharacter")
-    private List<PRCharacter> charactersInEpisode;
+    private Set<PRCharacter> charactersInEpisode;
 
-
-
-    public Episode(String episodesName, int episodeNumber, int episodesLengthMinutes, String episodesDescription) {
+    public Episode(String episodesName, int episodesNumber, int episodesLengthMinutes, String episodesDescription, String episodesPicture) {
         this.episodesName = episodesName;
-        this.episodeNumber = episodeNumber;
+        this.episodesNumber = episodesNumber;
+        this.episodesLengthMinutes = episodesLengthMinutes;
+        this.episodesDescription = episodesDescription;
+        this.episodesPicture = episodesPicture;
+    }
+
+    public Episode(String episodesName, int episodesNumber, int episodesLengthMinutes, String episodesDescription) {
+        this.episodesName = episodesName;
+        this.episodesNumber = episodesNumber;
         this.episodesLengthMinutes = episodesLengthMinutes;
         this.episodesDescription = episodesDescription;
     }
@@ -63,11 +81,11 @@ public class Episode {
     }
 
     public int getEpisodeNumber() {
-        return episodeNumber;
+        return episodesNumber;
     }
 
     public void setEpisodeNumber(int episodeNumber) {
-        this.episodeNumber = episodeNumber;
+        this.episodesNumber = episodeNumber;
     }
 
     public int getEpisodesLengthMinutes() {
@@ -86,28 +104,37 @@ public class Episode {
         this.episodesDescription = episodesDescription;
     }
 
-    public List<Season> getSeasonsEpisode() {
+
+    public Season getSeasonsEpisode() {
         return seasonsEpisode;
     }
 
-    public void setSeasonsEpisode(List<Season> seasonsEpisode) {
+    public void setSeasonsEpisode(Season seasonsEpisode) {
         this.seasonsEpisode = seasonsEpisode;
     }
 
-    public List<PRCharacter> getCharactersInEpisode() {
+    public Set<PRCharacter> getCharactersInEpisode() {
         return charactersInEpisode;
     }
 
-    public void setCharactersInEpisode(List<PRCharacter> charactersInEpisode) {
+    public void setCharactersInEpisode(Set<PRCharacter> charactersInEpisode) {
         this.charactersInEpisode = charactersInEpisode;
     }
 
-    public void addToSeasons(Season season) {
-        seasonsEpisode.add(season);
+    public int getEpisodesNumber() {
+        return episodesNumber;
     }
 
-    public void removeFromSeasons(Season season) {
-        seasonsEpisode.remove(season);
+    public void setEpisodesNumber(int episodesNumber) {
+        this.episodesNumber = episodesNumber;
+    }
+
+    public String getEpisodesPicture() {
+        return episodesPicture;
+    }
+
+    public void setEpisodesPicture(String episodesPicture) {
+        this.episodesPicture = episodesPicture;
     }
 
     public void removeFromEpisodeCharacters(Episode episode) {

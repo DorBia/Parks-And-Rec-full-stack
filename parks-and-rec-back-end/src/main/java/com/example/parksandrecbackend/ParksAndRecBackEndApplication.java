@@ -12,6 +12,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 @SpringBootApplication()
 public class ParksAndRecBackEndApplication {
@@ -30,17 +31,20 @@ public class ParksAndRecBackEndApplication {
         PRCharacter tammy = new PRCharacter("Tammy", "Ron's ex", "No idea");
         List<PRCharacter> characters = Arrays.asList(leslie, tom, tammy);
 
-        Season season1 = new Season(1);
-        Season season2 = new Season(2);
-        List<Season> seasons = Arrays.asList(season1, season2);
+        Season season1 = new Season(1, "some description s1", "https://en.m.wikipedia.org/wiki/Parks_and_Recreation_(season_1)#/media/File%3AParks_and_recreation_season_1_dvd_cover.jpg");
+        Season season2 = new Season(2, "some description s2");
+        Season season3 = new Season(3, "some description s3");
+        List<Season> seasons = Arrays.asList(season1, season2, season3);
 
 
-        Episode episode1 = new Episode("Some episode", 1, 25, "Cool episode, nothing happened");
+        Episode episode1 = new Episode("Some episode", 1, 25, "Cool episode, nothing happened", "https://static.wikia.nocookie.net/parksandrecreation/images/e/eb/S07E01.png");
         Episode episode2 = new Episode("Some other episode", 2, 25, "Cool episode");
         List<Episode> episodes = Arrays.asList(episode1, episode2);
 
 
-        episode2.addToSeasons(season2);
+        episode2.setSeasonsEpisode(season3);
+        episode2.setSeasonsEpisode(season1);
+        episode1.setSeasonsEpisode(season1);
 
         leslie.addToSeasons(season1);
         leslie.addToSeasons(season2);
@@ -50,20 +54,13 @@ public class ParksAndRecBackEndApplication {
         tom.addToEpisodes(episode1);
         tom.addToEpisodes(episode2);
 
-        episode2.setCharactersInEpisode(List.of(tom));
-//        season2.addEpisodes(episode1);
+        episode2.setCharactersInEpisode(Set.of(tom, leslie));
+        episode1.setCharactersInEpisode(Set.of(tammy));
 
 
         seasonRepo.saveAll(seasons);
         episodeRepo.saveAll(episodes);
         characterRepo.saveAll(characters);
-
-
-
-
-
-
-
 
 
     }
