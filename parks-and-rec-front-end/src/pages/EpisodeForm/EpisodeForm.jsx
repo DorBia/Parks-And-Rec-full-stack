@@ -8,47 +8,47 @@ const CharacterForm = ({condition}) => {
 
   const { id } = useParams();
 
-  const [character, setCharacter] = useState({
-    charactersName: "",
-    age: 0,
-    charactersDescription: "",
-    charactersPictureLink: "",
-    actorsName: "",
+  const [episode, setEpisode] = useState({
+    episodesName: "",
+    episodesNumber: 0,
+    episodesLengthMinutes: 25,
+    episodesDescription: "",
+    episodesPicture: ""
   });
 
   const {
-    charactersName,
-    age,
-    charactersDescription,
-    charactersPictureLink,
-    actorsName,
-  } = character
+    episodesName,
+    episodesNumber,
+    episodesLengthMinutes,
+    episodesDescription,
+    episodesPicture,
+  } = episode
 
   const onInputChange = (e) => {
-    setCharacter({ ...character, [e.target.name]: e.target.value });
+    setEpisode({ ...episode, [e.target.name]: e.target.value });
   };
 
   useEffect(() => {
-    loadCharacter(id, condition);
+    loadEpisode(id, condition);
   },[id, condition])
 
   const onSubmit = async (e, exists) => {
     if(exists){
       e.preventDefault();
-      await axios.put(`http://localhost:8080/character/${id}`, character);
-      navigate(`/character/${id}`)
+      await axios.put(`http://localhost:8080/episode/${id}`, episode);
+      navigate("/episodes")
     } else {
       e.preventDefault();
-      await axios.post("http://localhost:8080/character/create",character);
-      navigate("/characters")
+      await axios.post("http://localhost:8080/episode/create",episode);
+      navigate("/episodes")
     }
 
   }
 
-  const loadCharacter = async (id, exists) => {
+  const loadEpisode = async (id, exists) => {
     if(exists) {
-      const result = await axios.get(`http://localhost:8080/character/${id}`, {validateStatus: (status) => status === 302});
-      setCharacter(result.data)
+      const result = await axios.get(`http://localhost:8080/episode/${id}`, {validateStatus: (status) => status === 302});
+      setEpisode(result.data)
     }
   }
 
@@ -56,8 +56,8 @@ const CharacterForm = ({condition}) => {
     <div className="container">
       <div className="row">
         <div className="col-md-8 offset-md-2 border rounded p-4 mt-5 shadow">
-        {condition && <h2 className="text-center m-4">Edit Character</h2>}
-        {!condition && <h2 className="text-center m-4">Add Character</h2>}
+          {condition && <h2 className="text-center m-4">Edit Episode</h2>}
+          {!condition && <h2 className="text-center m-4">Add Episode</h2>}
           <form onSubmit={(e) => onSubmit(e, condition)}>
           <div className="mb-3">
             <label htmlFor="name" className="form-label">
@@ -67,22 +67,35 @@ const CharacterForm = ({condition}) => {
               type="text"
               className="form-control"
               placeholder="Name"
-              name="charactersName"
+              name="episodesName"
               id="name"
-              value={charactersName}
+              value={episodesName}
               onChange={(e) => onInputChange(e)}
             />
           </div>
           <div className="mb-3">
-            <label htmlFor="age" className="form-label">
-              Age
+            <label htmlFor="number" className="form-label">
+              Number
             </label>
             <input
               type="number"
               className="form-control"
-              name="age"
-              id="age"
-              value={age}
+              name="episodesNumber"
+              id="number"
+              value={episodesNumber}
+              onChange={(e) => onInputChange(e)}
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="length" className="form-label">
+              Length (minutes)
+            </label>
+            <input
+              type="number"
+              className="form-control"
+              name="episodesLengthMinutes"
+              id="length"
+              value={episodesLengthMinutes}
               onChange={(e) => onInputChange(e)}
             />
           </div>
@@ -94,37 +107,23 @@ const CharacterForm = ({condition}) => {
               type="text"
               className="form-control"
               placeholder="Description"
-              name="charactersDescription"
+              name="episodesDescription"
               id="description"
-              value={charactersDescription}
+              value={episodesDescription}
               onChange={(e) => onInputChange(e)}
             />
           </div>
           <div className="mb-3">
             <label htmlFor="picture-link" className="form-label">
-              Picture link
+              Episode's picture
             </label>
             <input
               type="text"
               className="form-control"
-              placeholder="Picture's link"
-              name="charactersPictureLink"
+              placeholder="Picture's Link"
+              name="episodesPicture"
               id="picture-link"
-              value={charactersPictureLink}
-              onChange={(e) => onInputChange(e)}
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="actor-name" className="form-label">
-              Actor's name
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Actor's name"
-              name="actorsName"
-              id="actor-name"
-              value={actorsName}
+              value={episodesPicture}
               onChange={(e) => onInputChange(e)}
             />
           </div>
@@ -132,7 +131,7 @@ const CharacterForm = ({condition}) => {
           <button type="submit" className="btn btn-outline-primary">
             Submit
           </button>
-          <Link to="/characters" className="btn btn-outline-danger mx-2">
+          <Link to="/episodes" className="btn btn-outline-danger mx-2">
             Cancel
           </Link>
           </div>

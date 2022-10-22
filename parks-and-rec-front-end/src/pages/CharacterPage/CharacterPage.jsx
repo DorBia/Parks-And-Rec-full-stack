@@ -1,13 +1,15 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Button, Collapse } from "react-bootstrap";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import "./CharacterPage.scss";
 
 const CharacterPage = () => {
   const { id } = useParams();
   let navigate = useNavigate();
   const [character, setCharacter] = useState([]);
-
+  const [openSeasons, setOpenSeasons] = useState(false);
+  const [openEpisodes, setOpenEpisodes] = useState(false);
+  
   useEffect(() => {
     loadCharacter(id);
   }, [id]);
@@ -20,9 +22,10 @@ const CharacterPage = () => {
   };
 
   const deleteCharacter = async (id) => {
-    await axios.delete(`http://localhost:8080/character/${id}`)
-    navigate("/characters")
-  }
+    await axios.delete(`http://localhost:8080/character/${id}`);
+    navigate("/characters");
+  };
+
   const episodeJSX = character.episodesCharacter
     ? character.episodesCharacter.map((episode) => {
         if (episode.id) {
@@ -38,27 +41,79 @@ const CharacterPage = () => {
         return "";
       })
     : "";
-  // const seasonJSX = character.seasonsCharacter ? character.seasonsCharacter.map(season => {
-  //   return season.seasonsNumber;
-  // }) : ""
+  const seasonJSX = character.seasonsCharacter
+    ? character.seasonsCharacter.map((season) => {
+        return <p key={season.seasonsNumber}>Season: {season.seasonsNumber}</p>;
+      })
+    : "";
 
   return (
-    <div className="container-fluid">
+    <div className="container py-4">
       <div className="row">
-        <div className="col border rounded p-4 mt-2 shadow">
-          <h2 className="text-center m-5">{character.charactersName}</h2>
-          <div className="row">
-          <img
-              src={character.charactersPictureLink}
-              alt={character.charactersName}
-              className="col-md-4 shadow rounded"
-            />
-            <p className="text-left col-md-8">{character.charactersDescription}</p>
+        <div className="border rounded p-4 mt-2 shadow">
+          <h2 className="text-center m-5 display-5">{character.charactersName}</h2>
+          <div className="row justify-content-center">
+            <div className="col-md-4 mx-2">
+              <img
+                src={character.charactersPictureLink}
+                alt={character.charactersName}
+                className="shadow rounded img-fluid"
+              />
+                  <div className="row mx-auto my-4 justify-content-center">
+                <div className="col-4 col-md-6 col-lg-5">
+              <Button
+                variant="outline-dark"
+                onClick={() => setOpenSeasons(!openSeasons)}
+                aria-controls="example-fade-text"
+                aria-expanded={openSeasons}
+              >
+                See Seasons
+              </Button>
+              <Collapse in={openSeasons}>
+                <div id="example-fade-text">{seasonJSX}</div>
+              </Collapse>
+              </div>
+              <div className="col-4 col-md-6 col-lg-5">
+              <Button
+                variant="outline-dark"
+                onClick={() => setOpenEpisodes(!openEpisodes)}
+                aria-controls="example-fade-text"
+                aria-expanded={openEpisodes}
+              >
+                See Episodes
+              </Button>
+              <Collapse in={openEpisodes}>
+                <div id="example-fade-text">{episodeJSX}</div>
+              </Collapse>
+              </div>
+              </div>
+            </div>
+            <p className="text-left col-md-7">
+              {character.charactersDescription}
+            </p>
           </div>
-          <div className="row">
-            <Link to={`/editcharacter/${character.id}`} className="btn btn-outline-primary mx-2">Edit</Link>
-            <button className="btn btn-danger mx-2" onClick={() => deleteCharacter(character.id)}>Delete</button>
+
+          <div className="row justify-content-center mt-3">
+            <Link
+              to={`/editcharacter/${character.id}`}
+              className="btn btn-outline-dark mx-2 col-3 col-md-2 p-3"
+            >
+              Edit
+            </Link>
+            <Button
+              className="mx-2 col-3 col-md-2 p-3"
+              variant="outline-danger"
+              onClick={() => deleteCharacter(character.id)}
+            >
+              Delete
+            </Button>
           </div>
+          <Button
+          variant="dark"
+          className="btn-lg"
+          onClick={() => navigate("/characters")}>
+            	&#60;-
+          </Button>
         </div>
       </div>
     </div>

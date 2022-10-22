@@ -4,15 +4,15 @@ import NavBar from './components/NavBar/NavBar';
 import CharacterPage from './pages/CharacterPage/CharacterPage';
 import EpisodePage from './pages/EpisodePage/EpisodePage';
 import SeasonPage from './pages/SeasonPage/SeasonPage';
-import Home from './pages/Home';
 import Characters from './pages/Characters/Characters';
 import Seasons from './pages/Seasons/Seasons';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-// import AddCharacter from './pages/AddCharacter/AddCharacter';
 import CharacterForm from './pages/CharacterForm/CharacterForm';
+import EpisodeForm from './pages/EpisodeForm/EpisodeForm';
 import Episodes from './pages/Episodes/Episodes';
 import AddUser from './pages/AddUser';
+import Home from './pages/Home';
 
 function App() {
 
@@ -40,6 +40,12 @@ function App() {
           }/>
           <Route path="/addcharacter/" element={
             <CharacterForm condition={false}/>
+          }/>
+          <Route path="/addepisode/" element={
+            <EpisodeForm condition={false}/>
+          }/>
+          <Route path="/editepisode/:id" element={
+            <EpisodeForm condition={true}/>
           }/>
           <Route path="/characters/" element={
             <Characters />
