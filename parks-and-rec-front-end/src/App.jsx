@@ -36,16 +36,16 @@ function App() {
             <AddUser />
           }/>
         <Route path="/editcharacter/:id" element={
-            <CharacterForm condition={true}/>
+            <CharacterForm condition={true} seasons={seasons}/>
           }/>
           <Route path="/addcharacter/" element={
             <CharacterForm condition={false}/>
           }/>
           <Route path="/addepisode/" element={
-            <EpisodeForm condition={false}/>
+            <EpisodeForm condition={false} seasons={seasons}/>
           }/>
           <Route path="/editepisode/:id" element={
-            <EpisodeForm condition={true}/>
+            <EpisodeForm condition={true} seasons={seasons}/>
           }/>
           <Route path="/characters/" element={
             <Characters />

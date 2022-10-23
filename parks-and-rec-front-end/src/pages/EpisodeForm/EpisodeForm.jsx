@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
-const CharacterForm = ({condition}) => {
+const CharacterForm = ({condition, seasons}) => {
 
   let navigate = useNavigate()
 
@@ -11,9 +11,9 @@ const CharacterForm = ({condition}) => {
   const [episode, setEpisode] = useState({
     episodesName: "",
     episodesNumber: 0,
-    episodesLengthMinutes: 25,
+    episodesLengthMinutes: 21,
     episodesDescription: "",
-    episodesPicture: ""
+    episodesPicture: "",
   });
 
   const {
@@ -36,7 +36,7 @@ const CharacterForm = ({condition}) => {
     if(exists){
       e.preventDefault();
       await axios.put(`http://localhost:8080/episode/${id}`, episode);
-      navigate("/episodes")
+      navigate(`/episode/${id}`)
     } else {
       e.preventDefault();
       await axios.post("http://localhost:8080/episode/create",episode);
@@ -51,9 +51,19 @@ const CharacterForm = ({condition}) => {
       setEpisode(result.data)
     }
   }
+  const seasonsJSX = seasons ? seasons.map(season => {
+    return(
+    <div key={`season${season.id}`} className="col">
+      <label className="mx-1">{season.seasonsNumber} <input type="radio" id={`season${season.seasonsNumber}`} value={season || ''} onChange={() => setEpisode({ ...episode, seasonsEpisode: season })}/></label>
+      
+    </div>)
+  }) : null;
+
+  
 
   return (
     <div className="container">
+      <button onClick={() => console.log(episode)}>Click</button>
       <div className="row">
         <div className="col-md-8 offset-md-2 border rounded p-4 mt-5 shadow">
           {condition && <h2 className="text-center m-4">Edit Episode</h2>}
@@ -64,12 +74,13 @@ const CharacterForm = ({condition}) => {
               Name
             </label>
             <input
+              required
               type="text"
               className="form-control"
               placeholder="Name"
               name="episodesName"
               id="name"
-              value={episodesName}
+              value={episodesName || ""}
               onChange={(e) => onInputChange(e)}
             />
           </div>
@@ -78,6 +89,7 @@ const CharacterForm = ({condition}) => {
               Number
             </label>
             <input
+              required
               type="number"
               className="form-control"
               name="episodesNumber"
@@ -91,6 +103,7 @@ const CharacterForm = ({condition}) => {
               Length (minutes)
             </label>
             <input
+              required
               type="number"
               className="form-control"
               name="episodesLengthMinutes"
@@ -104,12 +117,13 @@ const CharacterForm = ({condition}) => {
               Description
             </label>
             <textarea
+              required
               type="text"
               className="form-control"
               placeholder="Description"
               name="episodesDescription"
               id="description"
-              value={episodesDescription}
+              value={episodesDescription || ""}
               onChange={(e) => onInputChange(e)}
             />
           </div>
@@ -123,12 +137,16 @@ const CharacterForm = ({condition}) => {
               placeholder="Picture's Link"
               name="episodesPicture"
               id="picture-link"
-              value={episodesPicture}
+              value={episodesPicture || ""}
               onChange={(e) => onInputChange(e)}
             />
           </div>
+          <p className="text-center">Choose season:</p>
+          <div className="row mb-3">
+            {seasonsJSX}
+          </div>
           <div className="text-center">
-          <button type="submit" className="btn btn-outline-primary">
+          <button type="submit" className="btn btn-outline-primary" onClick={() => console.log(episode)}>
             Submit
           </button>
           <Link to="/episodes" className="btn btn-outline-danger mx-2">
