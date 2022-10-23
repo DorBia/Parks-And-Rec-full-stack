@@ -1,12 +1,18 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import InputBar from "../../components/InputBar/InputBar";
+import CollapseCheckbox from "../../components/CollapseCheckbox/CollapseCheckbox";
+import ButtonsBottomRow from "../../components/ButtonsBottomRow/ButtonsBottomRow";
 
-const CharacterForm = ({ condition, seasons }) => {
+const CharacterForm = ({ condition, seasons, episodes }) => {
   let navigate = useNavigate();
 
   const { id } = useParams();
-  const [seasonArr, setSeasonArr] = useState();
+  const [seasonArr, setSeasonArr] = useState([]);
+  const [episodeArr, setEpisodeArr] = useState([]);
+  const [openSeasons, setOpenSeasons] = useState(false);
+  const [openEpisodes, setOpenEpisodes] = useState(false);
 
   const [character, setCharacter] = useState({
     charactersName: "",
@@ -51,6 +57,7 @@ const CharacterForm = ({ condition, seasons }) => {
       });
       setCharacter(result.data);
       setSeasonArr(result.data.seasonsCharacter);
+      setEpisodeArr(result.data.episodesCharacter);
     }
   };
 
@@ -60,118 +67,140 @@ const CharacterForm = ({ condition, seasons }) => {
       : setSeasonArr([...seasonArr, newSeason]);
   };
 
-  const seasonsJSX = seasons
-    ? seasons.map((season) => {
-        return (
-          <div key={`season${season.id}`} className="col">
-            <label className="mx-1">
-              {season.seasonsNumber}{" "}
-              <input
-                type="checkbox"
-                checked={seasonArr?.some((s) => s.id === season.id) || false}
-                id={`season${season.seasonsNumber}`}
-                defaultValue={season || ""}
-                onChange={() => addOrRemoveSeasons(season)}
-              />
-            </label>
-          </div>
-        );
-      })
-    : null;
+  const addOrRemoveEpisodes = (newEpisode) => {
+    episodeArr?.some((e) => e.id === newEpisode.id)
+      ? setEpisodeArr(
+          episodeArr?.filter((episode) => episode.id !== newEpisode.id)
+        )
+      : setEpisodeArr([...episodeArr, newEpisode]);
+  };
+
+  const handleClick = (setOpenFalse, setOpen, open, condition) => {
+    setOpenFalse(false);
+    setOpen(!open);
+    if (condition) {
+      setCharacter({ ...character, seasonsCharacter: seasonArr });
+    }
+  };
+
+  const setAll = () => {
+    setCharacter({
+      ...character,
+      episodesCharacter: episodeArr,
+      seasonsCharacter: seasonArr,
+    });
+  }
+
+  const seasonsJSX = seasons?.map((season) => {
+    return (
+      <div key={`season${season.id}`} className="col">
+        <label className="mx-1">
+          {season.seasonsNumber}{" "}
+          <input
+            type="checkbox"
+            checked={seasonArr?.some((s) => s.id === season.id) || false}
+            id={`season${season.seasonsNumber}`}
+            defaultValue={season || ""}
+            onChange={() => addOrRemoveSeasons(season)}
+          />
+        </label>
+      </div>
+    );
+  });
+
+  const episodesJSX = episodes?.map((episode) => {
+    if (
+      seasonArr?.some(
+        (s) =>
+          episode.seasonsEpisode.id === s.id || s.id === episode.seasonsEpisode
+      )
+    ) {
+      return (
+        <div key={`episode${episode.id}`} className="col">
+          <label className="mx-1">
+            {episode.episodesName}{" "}
+            <input
+              type="checkbox"
+              checked={episodeArr?.some((e) => e.id === episode.id) || false}
+              id={`episode${episode.id}`}
+              defaultValue={episode || ""}
+              onChange={() => addOrRemoveEpisodes(episode)}
+            />
+          </label>
+        </div>
+      );
+    }
+    return null;
+  });
 
   return (
     <div className="container">
-      <button onClick={() => console.log(seasonArr)}>click</button>
+      <button onClick={() => console.log(episodeArr)}>click</button>
       <div className="row">
         <div className="col-md-8 offset-md-2 border rounded p-4 mt-5 shadow">
           {condition && <h2 className="text-center m-4">Edit Character</h2>}
           {!condition && <h2 className="text-center m-4">Add Character</h2>}
           <form onSubmit={(e) => onSubmit(e, condition)}>
-            <div className="mb-3">
-              <label htmlFor="name" className="form-label">
-                Name
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Name"
-                name="charactersName"
-                id="name"
-                value={charactersName || ""}
-                onChange={(e) => onInputChange(e)}
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="age" className="form-label">
-                Age
-              </label>
-              <input
-                type="number"
-                className="form-control"
-                name="age"
-                id="age"
-                value={age}
-                onChange={(e) => onInputChange(e)}
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="description" className="form-label">
-                Description
-              </label>
-              <textarea
-                type="text"
-                className="form-control"
-                placeholder="Description"
-                name="charactersDescription"
-                id="description"
-                value={charactersDescription || ""}
-                onChange={(e) => onInputChange(e)}
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="picture-link" className="form-label">
-                Picture link
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Picture's link"
-                name="charactersPictureLink"
-                id="picture-link"
-                value={charactersPictureLink || ""}
-                onChange={(e) => onInputChange(e)}
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="actor-name" className="form-label">
-                Actor's name
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Actor's name"
-                name="actorsName"
-                id="actor-name"
-                value={actorsName || ""}
-                onChange={(e) => onInputChange(e)}
-              />
-            </div>
-            <p className="text-center">Choose season:</p>
-            <div className="row mb-3">{seasonsJSX}</div>
-            <div className="text-center">
-              <button
-                type="submit"
-                className="btn btn-outline-primary"
-                onClick={() => {
-                  setCharacter({ ...character, seasonsCharacter: seasonArr });
-                }}
-              >
-                Submit
-              </button>
-              <Link to="/characters" className="btn btn-outline-danger mx-2">
-                Cancel
-              </Link>
-            </div>
+            <InputBar
+              type="text"
+              placeholder="Name"
+              name="charactersName"
+              id="name"
+              value={charactersName}
+              onInputChange={onInputChange}
+              required={true}
+            />
+            <InputBar
+              type="number"
+              placeholder="Age"
+              name="age"
+              id="age"
+              value={age}
+              onInputChange={onInputChange}
+            />
+            <InputBar
+              type="text"
+              placeholder="Description"
+              name="charactersDescription"
+              id="description"
+              value={charactersDescription}
+              onInputChange={onInputChange}
+              required={true}
+            />
+            <InputBar
+              type="text"
+              placeholder="Picture's link"
+              name="charactersPictureLink"
+              id="picture-link"
+              value={charactersPictureLink}
+              onInputChange={onInputChange}
+            />
+            <InputBar
+              type="text"
+              placeholder="Actor's name"
+              name="actorsName"
+              id="actor-name"
+              value={actorsName}
+              onInputChange={onInputChange}
+              required={true}
+            />
+            <CollapseCheckbox
+              handleClick={handleClick}
+              setOpenFalse={setOpenEpisodes}
+              setOpen={setOpenSeasons}
+              open={openSeasons}
+              data={seasonsJSX}
+              condition={false}
+            />
+            <CollapseCheckbox
+              handleClick={handleClick}
+              setOpenFalse={setOpenSeasons}
+              setOpen={setOpenEpisodes}
+              open={openEpisodes}
+              data={episodesJSX}
+              condition={true}
+            />
+          <ButtonsBottomRow destination="/episodes" setAll={setAll} condition={true}/>
           </form>
         </div>
       </div>

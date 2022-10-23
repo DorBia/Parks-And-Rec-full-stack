@@ -9,8 +9,6 @@ const EpisodePage = () => {
   const { id } = useParams();
   let navigate = useNavigate();
   const [episode, setEpisode] = useState([]);
-  // const [openSeasons, setOpenSeasons] = useState(false);
-  // const [openEpisodes, setOpenEpisodes] = useState(false);
 
   useEffect(() => {
     loadEpisode(id);
@@ -74,7 +72,7 @@ const EpisodePage = () => {
         <div className="row justify-content-center mt-3">
           <Link
             to={`/editepisode/${episode.id}`}
-            className="btn btn-outline-dark mx-2 col-3 col-md-2 p-3"
+            className="btn btn-outline-primary mx-2 col-3 col-md-2 p-3"
           >
             Edit
           </Link>
@@ -88,10 +86,10 @@ const EpisodePage = () => {
         </div>
         <Button
           variant="dark"
-          className="btn-lg"
+          className="btn py-2 px-3"
           onClick={() => navigate("/episodes")}
         >
-          &#60;-
+          ⇦
         </Button>
       </div>
     </div>

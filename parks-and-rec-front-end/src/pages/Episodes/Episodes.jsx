@@ -1,25 +1,13 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
-const Episodes = () => {
-  const [episodes, setEpisodes] = useState([]);
+const Episodes = ({episodes, loadEpisodes}) => {
 
   useEffect(() => {
     loadEpisodes();
-  }, []);
-
-  const loadEpisodes = async () => {
-    const result = await axios.get("http://localhost:8080/episode/all", {
-      validateStatus: (status) => status === 302,
-    });
-    setEpisodes(result.data);
-  };
-
-  // const deleteEpisode = async (id) => {
-  //   await axios.delete(`http://localhost:8080/episode/${id}`);
-  //   loadEpisodes();
-  // };
+    //eslint-disable-next-line
+  },[])
 
   return (
     <div className="container text-center col-12 col-lg-9 col-xl-6">
@@ -38,24 +26,6 @@ const Episodes = () => {
           </thead>
           <tbody>
             {episodes.map((episode) => {
-              // const charactersArr = episode.charactersInEpisode.map(
-              //   (character) => {
-              //     if (character.id) {
-              //       return (
-              //         <Link
-              //           to={`/character/${character.id}`}
-              //           key={`${character.id}, ${episode.id}`}
-              //         >
-              //           {character.charactersName}{" "}
-              //         </Link>
-              //       );
-              //     }
-              //     return "";
-              //   }
-              // );
-              // const season = episode.seasonsEpisode
-              //   ? episode.seasonsEpisode.seasonsNumber
-              //   : "";
               return (
                 <tr key={episode.id} className="align-middle">
                   <td className="col-1 border-end">{episode.episodeNumber}</td>
@@ -73,22 +43,6 @@ const Episodes = () => {
                     </Link>
                   </td>
                   <td className="col-2">{episode.episodesLengthMinutes} mins</td>
-                  {/* <td className="col-3 border-end">{episode.episodesDescription}</td> */}
-                  {/* <td className="col-1 border-end">{season}</td> */}
-                  {/* <td className="col-3 border-end">
-                    <Link
-                      to={`/editepisode/${episode.id}`}
-                      className="btn btn-outline-primary mx-2"
-                    >
-                      Edit
-                    </Link>
-                    <button
-                      className="btn btn-danger mx-2"
-                      onClick={() => deleteEpisode(episode.id)}
-                    >
-                      Delete
-                    </button>
-                  </td> */}
                 </tr>
               );
             })}

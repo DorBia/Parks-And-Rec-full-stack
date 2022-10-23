@@ -96,7 +96,7 @@ const CharacterPage = () => {
           <div className="row justify-content-center mt-3">
             <Link
               to={`/editcharacter/${character.id}`}
-              className="btn btn-outline-dark mx-2 col-3 col-md-2 p-3"
+              className="btn btn-outline-primary mx-2 col-3 col-md-2 p-3"
             >
               Edit
             </Link>
@@ -110,10 +110,11 @@ const CharacterPage = () => {
           </div>
           <Button
           variant="dark"
-          className="btn-lg"
-          onClick={() => navigate("/characters")}>
-            	&#60;-
-          </Button>
+          className="btn py-2 px-3"
+          onClick={() => navigate("/characters")}
+        >
+          ⇦
+        </Button>
         </div>
       </div>
     </div>

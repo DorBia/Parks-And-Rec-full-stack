@@ -1,21 +1,14 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+// import axios from "axios";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Characters.scss";
 
-const Characters = () => {
-  const [characters, setCharacters] = useState([]);
+const Characters = ({characters, loadCharacters}) => {
 
   useEffect(() => {
     loadCharacters();
+    //eslint-disable-next-line
   }, []);
-
-  const loadCharacters = async () => {
-    const result = await axios.get("http://localhost:8080/character/all", {
-      validateStatus: (status) => status === 302,
-    });
-    setCharacters(result.data);
-  };
 
   return (
     <div className="container text-center">

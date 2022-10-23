@@ -17,15 +17,33 @@ import Home from './pages/Home';
 function App() {
 
   const [ seasons, setSeasons ] = useState([]);
+  const [episodes, setEpisodes] = useState([]);
+  const [characters, setCharacters] = useState([]);
 
   useEffect(() => {
     loadSeasons();
+    loadEpisodes();
+    loadCharacters();
   },[])
   
   const loadSeasons = async () =>{
     const result = await axios.get("http://localhost:8080/season/all", {validateStatus: (status) => status === 302});
     setSeasons(result.data);
   }
+
+  const loadEpisodes = async () => {
+    const result = await axios.get("http://localhost:8080/episode/all", {
+      validateStatus: (status) => status === 302,
+    });
+    setEpisodes(result.data);
+  };
+
+  const loadCharacters = async () => {
+    const result = await axios.get("http://localhost:8080/character/all", {
+      validateStatus: (status) => status === 302,
+    });
+    setCharacters(result.data);
+  };
 
   return (
     <Router>
@@ -36,10 +54,10 @@ function App() {
             <AddUser />
           }/>
         <Route path="/editcharacter/:id" element={
-            <CharacterForm condition={true} seasons={seasons}/>
+            <CharacterForm condition={true} seasons={seasons} episodes={episodes}/>
           }/>
           <Route path="/addcharacter/" element={
-            <CharacterForm condition={false}/>
+            <CharacterForm condition={false} seasons={seasons} episodes={episodes}/>
           }/>
           <Route path="/addepisode/" element={
             <EpisodeForm condition={false} seasons={seasons}/>
@@ -48,13 +66,13 @@ function App() {
             <EpisodeForm condition={true} seasons={seasons}/>
           }/>
           <Route path="/characters/" element={
-            <Characters />
+            <Characters characters={characters} loadCharacters={loadCharacters}/>
           }/>
           <Route path="/seasons/" element={
             <Seasons />
           }/>
           <Route path="/episodes/" element={
-            <Episodes />
+            <Episodes episodes={episodes} loadEpisodes={loadEpisodes}/>
           }/>
           <Route path="/season/:id" element={
             <SeasonPage />

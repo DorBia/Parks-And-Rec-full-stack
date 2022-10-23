@@ -1,10 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import ButtonsBottomRow from "../../components/ButtonsBottomRow/ButtonsBottomRow";
+import InputBar from "../../components/InputBar/InputBar";
 
-const CharacterForm = ({condition, seasons}) => {
-
-  let navigate = useNavigate()
+const EpisodeForm = ({ condition, seasons }) => {
+  let navigate = useNavigate();
 
   const { id } = useParams();
 
@@ -22,44 +23,56 @@ const CharacterForm = ({condition, seasons}) => {
     episodesLengthMinutes,
     episodesDescription,
     episodesPicture,
-  } = episode
+  } = episode;
 
   const onInputChange = (e) => {
     setEpisode({ ...episode, [e.target.name]: e.target.value });
-  };
+  }; 
 
   useEffect(() => {
     loadEpisode(id, condition);
-  },[id, condition])
+  }, [id, condition]);
 
   const onSubmit = async (e, exists) => {
-    if(exists){
+    if (exists) {
       e.preventDefault();
       await axios.put(`http://localhost:8080/episode/${id}`, episode);
-      navigate(`/episode/${id}`)
+      navigate(`/episode/${id}`);
     } else {
       e.preventDefault();
-      await axios.post("http://localhost:8080/episode/create",episode);
-      navigate("/episodes")
+      await axios.post("http://localhost:8080/episode/create", episode);
+      navigate("/episodes");
     }
-
-  }
+  };
 
   const loadEpisode = async (id, exists) => {
-    if(exists) {
-      const result = await axios.get(`http://localhost:8080/episode/${id}`, {validateStatus: (status) => status === 302});
-      setEpisode(result.data)
+    if (exists) {
+      const result = await axios.get(`http://localhost:8080/episode/${id}`, {
+        validateStatus: (status) => status === 302,
+      });
+      setEpisode(result.data);
     }
-  }
-  const seasonsJSX = seasons ? seasons.map(season => {
-    return(
-    <div key={`season${season.id}`} className="col">
-      <label className="mx-1">{season.seasonsNumber} <input type="radio" id={`season${season.seasonsNumber}`} value={season || ''} onChange={() => setEpisode({ ...episode, seasonsEpisode: season })}/></label>
-      
-    </div>)
-  }) : null;
-
-  
+  };
+  const seasonsJSX = seasons
+    ? seasons.map((season) => {
+        return (
+          <div key={`season${season.id}`} className="col">
+            <label className="mx-1">
+              {season.seasonsNumber}{" "}
+              <input
+                type="radio"
+                id={`season${season.seasonsNumber}`}
+                checked={episode.seasonsEpisode ? episode.seasonsEpisode.id === season.id : false}
+                value={season || ""}
+                onChange={() =>
+                  setEpisode({ ...episode, seasonsEpisode: season })
+                }
+              />
+            </label>
+          </div>
+        );
+      })
+    : null;
 
   return (
     <div className="container">
@@ -69,90 +82,60 @@ const CharacterForm = ({condition, seasons}) => {
           {condition && <h2 className="text-center m-4">Edit Episode</h2>}
           {!condition && <h2 className="text-center m-4">Add Episode</h2>}
           <form onSubmit={(e) => onSubmit(e, condition)}>
-          <div className="mb-3">
-            <label htmlFor="name" className="form-label">
-              Name
-            </label>
-            <input
-              required
+            <InputBar
               type="text"
-              className="form-control"
               placeholder="Name"
               name="episodesName"
               id="name"
-              value={episodesName || ""}
-              onChange={(e) => onInputChange(e)}
+              value={episodesName}
+              onInputChange={onInputChange}
+              required={true}
             />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="number" className="form-label">
-              Number
-            </label>
-            <input
-              required
+            <InputBar
               type="number"
-              className="form-control"
+              placeholder="Number"
               name="episodesNumber"
               id="number"
               value={episodesNumber}
-              onChange={(e) => onInputChange(e)}
+              onInputChange={onInputChange}
+              required={true}
             />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="length" className="form-label">
-              Length (minutes)
-            </label>
-            <input
-              required
+            <InputBar
               type="number"
-              className="form-control"
+              placeholder="Length (minutes)"
               name="episodesLengthMinutes"
               id="length"
               value={episodesLengthMinutes}
-              onChange={(e) => onInputChange(e)}
+              onInputChange={onInputChange}
+              required={true}
             />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="description" className="form-label">
-              Description
-            </label>
-            <textarea
-              required
+            <div className="mb-3">
+              <label htmlFor="description" className="form-label">
+                Description
+              </label>
+              <textarea
+                required
+                type="text"
+                className="form-control"
+                placeholder="Description"
+                name="episodesDescription"
+                id="description"
+                value={episodesDescription || ""}
+                onChange={(e) => onInputChange(e)}
+              />
+            </div>
+            <InputBar
               type="text"
-              className="form-control"
-              placeholder="Description"
-              name="episodesDescription"
-              id="description"
-              value={episodesDescription || ""}
-              onChange={(e) => onInputChange(e)}
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="picture-link" className="form-label">
-              Episode's picture
-            </label>
-            <input
-              type="text"
-              className="form-control"
               placeholder="Picture's Link"
               name="episodesPicture"
-              id="picture-link"
-              value={episodesPicture || ""}
-              onChange={(e) => onInputChange(e)}
+              id="length"
+              value={episodesPicture}
+              onInputChange={onInputChange}
+              required={false}
             />
-          </div>
-          <p className="text-center">Choose season:</p>
-          <div className="row mb-3">
-            {seasonsJSX}
-          </div>
-          <div className="text-center">
-          <button type="submit" className="btn btn-outline-primary" onClick={() => console.log(episode)}>
-            Submit
-          </button>
-          <Link to="/episodes" className="btn btn-outline-danger mx-2">
-            Cancel
-          </Link>
-          </div>
+            <p className="text-center">Choose season:</p>
+            <div className="row mb-3">{seasonsJSX}</div>
+            <ButtonsBottomRow destination="/episodes" />
           </form>
         </div>
       </div>
@@ -160,4 +143,4 @@ const CharacterForm = ({condition, seasons}) => {
   );
 };
 
-export default CharacterForm;
+export default EpisodeForm;
