@@ -1,9 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import InputBar from "../../components/InputBar/InputBar";
 import CollapseCheckbox from "../../components/CollapseCheckbox/CollapseCheckbox";
 import ButtonsBottomRow from "../../components/ButtonsBottomRow/ButtonsBottomRow";
+import TextArea from "../../components/TextArea/TextArea";
 
 const CharacterForm = ({ condition, seasons, episodes }) => {
   let navigate = useNavigate();
@@ -30,21 +31,18 @@ const CharacterForm = ({ condition, seasons, episodes }) => {
     actorsName,
   } = character;
 
-  const onInputChange = (e) => {
-    setCharacter({ ...character, [e.target.name]: e.target.value });
-  };
+  const onInputChange = (e) => setCharacter({ ...character, [e.target.name]: e.target.value });
 
   useEffect(() => {
     loadCharacter(id, condition);
   }, [id, condition]);
 
   const onSubmit = async (e, exists) => {
+    e.preventDefault();
     if (exists) {
-      e.preventDefault();
       await axios.put(`http://localhost:8080/character/${id}`, character);
       navigate(`/character/${id}`);
     } else {
-      e.preventDefault();
       await axios.post("http://localhost:8080/character/create", character);
       navigate("/characters");
     }
@@ -89,7 +87,7 @@ const CharacterForm = ({ condition, seasons, episodes }) => {
       episodesCharacter: episodeArr,
       seasonsCharacter: seasonArr,
     });
-  }
+  };
 
   const seasonsJSX = seasons?.map((season) => {
     return (
@@ -158,14 +156,10 @@ const CharacterForm = ({ condition, seasons, episodes }) => {
               value={age}
               onInputChange={onInputChange}
             />
-            <InputBar
-              type="text"
-              placeholder="Description"
+            <TextArea
               name="charactersDescription"
-              id="description"
               value={charactersDescription}
               onInputChange={onInputChange}
-              required={true}
             />
             <InputBar
               type="text"
@@ -191,6 +185,7 @@ const CharacterForm = ({ condition, seasons, episodes }) => {
               open={openSeasons}
               data={seasonsJSX}
               condition={false}
+              text={"Choose Seasons"}
             />
             <CollapseCheckbox
               handleClick={handleClick}
@@ -199,8 +194,13 @@ const CharacterForm = ({ condition, seasons, episodes }) => {
               open={openEpisodes}
               data={episodesJSX}
               condition={true}
+              text={"Choose Episodes"}
             />
-          <ButtonsBottomRow destination="/episodes" setAll={setAll} condition={true}/>
+            <ButtonsBottomRow
+              destination="/episodes"
+              setAll={setAll}
+              condition={true}
+            />
           </form>
         </div>
       </div>

@@ -1,11 +1,5 @@
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import Button from 'react-bootstrap/Button';
 import { Link } from "react-router-dom";
-
-import "./NavBar.scss"
+import { Button, Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
 
 const NavBar = ({seasons}) => {
   return (
