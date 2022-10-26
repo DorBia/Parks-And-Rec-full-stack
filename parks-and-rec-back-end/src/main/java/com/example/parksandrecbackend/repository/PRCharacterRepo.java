@@ -11,8 +11,4 @@ public interface PRCharacterRepo extends JpaRepository<PRCharacter, Long> {
 
     List<PRCharacter> getAllByCharactersNameIgnoreCase(String charactersName);
 
-//    void addToEpisode(Episode episode);
-
-//    @Query(value = "SELECT * FROM prcharacter WHERE name = ''", nativeQuery = true)
-//    Optional<List<PRCharacter>> findByName(String name);
 }

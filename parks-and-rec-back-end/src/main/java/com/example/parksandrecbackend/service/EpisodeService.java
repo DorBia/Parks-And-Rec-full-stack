@@ -6,7 +6,6 @@ import com.example.parksandrecbackend.repository.EpisodeRepo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class EpisodeService {
@@ -27,7 +26,6 @@ public class EpisodeService {
         return episodeRepo.findById(id).orElseThrow(EpisodeNotFoundException::new);
     }
 
-
     public List<Episode> getAllEpisodes() {
         return episodeRepo.findAll();
     }
@@ -38,7 +36,6 @@ public class EpisodeService {
         newEpisode.setId(id);
         episodeRepo.saveAndFlush(newEpisode);
     }
-
 
     //    DELETE
     public void deleteEpisode(long id){
