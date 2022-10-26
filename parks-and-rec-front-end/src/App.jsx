@@ -13,6 +13,7 @@ import EpisodeForm from './pages/EpisodeForm/EpisodeForm';
 import Episodes from './pages/Episodes/Episodes';
 import AddUser from './pages/AddUser';
 import Home from './pages/Home';
+import SeasonForm from './pages/SeasonForm/SeasonForm';
 
 function App() {
 
@@ -27,19 +28,19 @@ function App() {
   },[])
   
   const loadSeasons = async () =>{
-    const result = await axios.get("http://localhost:8080/season/all", {validateStatus: (status) => status === 302});
+    const result = await axios.get("https://parks-and-rec-123.nw.r.appspot.com/season/all", {validateStatus: (status) => status === 302});
     setSeasons(result.data);
   }
 
   const loadEpisodes = async () => {
-    const result = await axios.get("http://localhost:8080/episode/all", {
+    const result = await axios.get("https://parks-and-rec-123.nw.r.appspot.com/episode/all", {
       validateStatus: (status) => status === 302,
     });
     setEpisodes(result.data);
   };
 
   const loadCharacters = async () => {
-    const result = await axios.get("http://localhost:8080/character/all", {
+    const result = await axios.get("https://parks-and-rec-123.nw.r.appspot.com/character/all", {
       validateStatus: (status) => status === 302,
     });
     setCharacters(result.data);
@@ -65,6 +66,13 @@ function App() {
           <Route path="/editepisode/:id" element={
             <EpisodeForm condition={true} seasons={seasons}/>
           }/>
+          <Route path="/addseason/" element={
+            <SeasonForm condition={false} seasons={seasons}/>
+          }/>
+          <Route path="/editseason/:id" element={
+            <SeasonForm condition={true} seasons={seasons}/>
+          }/>
+
           <Route path="/characters/" element={
             <Characters characters={characters} loadCharacters={loadCharacters}/>
           }/>

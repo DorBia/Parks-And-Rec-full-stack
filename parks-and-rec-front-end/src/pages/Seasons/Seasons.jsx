@@ -10,7 +10,7 @@ const Seasons = () => {
   },[])
 
 const loadSeasons = async () =>{
-  const result = await axios.get("http://localhost:8080/season/all" ,{
+  const result = await axios.get("https://parks-and-rec-123.nw.r.appspot.com/season/all" ,{
       validateStatus: function (status) {
           return true;
       }

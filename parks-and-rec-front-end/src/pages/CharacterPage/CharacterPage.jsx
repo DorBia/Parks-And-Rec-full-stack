@@ -15,14 +15,14 @@ const CharacterPage = () => {
   }, [id]);
 
   const loadCharacter = async (id) => {
-    const result = await axios.get(`http://localhost:8080/character/${id}`, {
+    const result = await axios.get(`https://parks-and-rec-123.nw.r.appspot.com/character/${id}`, {
       validateStatus: (status) => status === 302,
     });
     setCharacter(result.data);
   };
 
   const deleteCharacter = async (id) => {
-    await axios.delete(`http://localhost:8080/character/${id}`);
+    await axios.delete(`https://parks-and-rec-123.nw.r.appspot.com/character/${id}`);
     navigate("/characters");
   };
 

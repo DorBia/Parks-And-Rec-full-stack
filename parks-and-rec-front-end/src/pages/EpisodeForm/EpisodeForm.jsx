@@ -34,17 +34,17 @@ const EpisodeForm = ({ condition, seasons }) => {
   const onSubmit = async (e, exists) => {
     e.preventDefault();
     if (exists) {
-      await axios.put(`http://localhost:8080/episode/${id}`, episode);
+      await axios.put(`https://parks-and-rec-123.nw.r.appspot.com/episode/${id}`, episode);
       navigate(`/episode/${id}`);
     } else {
-      await axios.post("http://localhost:8080/episode/create", episode);
+      await axios.post("https://parks-and-rec-123.nw.r.appspot.com/episode/create", episode);
       navigate("/episodes");
     }
   };
 
   const loadEpisode = async (id, exists) => {
     if (exists) {
-      const result = await axios.get(`http://localhost:8080/episode/${id}`, {
+      const result = await axios.get(`https://parks-and-rec-123.nw.r.appspot.com/episode/${id}`, {
         validateStatus: (status) => status === 302,
       });
       setEpisode(result.data);

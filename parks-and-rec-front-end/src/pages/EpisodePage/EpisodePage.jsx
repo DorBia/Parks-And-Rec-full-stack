@@ -15,14 +15,14 @@ const EpisodePage = () => {
   }, [id]);
 
   const loadEpisode = async (id) => {
-    const result = await axios.get(`http://localhost:8080/episode/${id}`, {
+    const result = await axios.get(`https://parks-and-rec-123.nw.r.appspot.com/episode/${id}`, {
       validateStatus: (status) => status === 302,
     });
     setEpisode(result.data);
   };
 
   const deleteEpisode = async (id) => {
-    await axios.delete(`http://localhost:8080/episode/${id}`);
+    await axios.delete(`https://parks-and-rec-123.nw.r.appspot.com/episode/${id}`);
     navigate("/episodes");
   };
 

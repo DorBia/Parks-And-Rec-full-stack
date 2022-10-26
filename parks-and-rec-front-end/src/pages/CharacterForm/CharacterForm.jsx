@@ -30,7 +30,7 @@ const CharacterForm = ({ condition, seasons, episodes }) => {
     charactersPictureLink,
     actorsName,
   } = character;
-
+                                                 
   const onInputChange = (e) => setCharacter({ ...character, [e.target.name]: e.target.value });
 
   useEffect(() => {
@@ -40,17 +40,17 @@ const CharacterForm = ({ condition, seasons, episodes }) => {
   const onSubmit = async (e, exists) => {
     e.preventDefault();
     if (exists) {
-      await axios.put(`http://localhost:8080/character/${id}`, character);
+      await axios.put(`https://parks-and-rec-123.nw.r.appspot.com/character/${id}`, character);
       navigate(`/character/${id}`);
     } else {
-      await axios.post("http://localhost:8080/character/create", character);
+      await axios.post("https://parks-and-rec-123.nw.r.appspot.com/character/create", character);
       navigate("/characters");
     }
   };
 
   const loadCharacter = async (id, exists) => {
     if (exists) {
-      const result = await axios.get(`http://localhost:8080/character/${id}`, {
+      const result = await axios.get(`https://parks-and-rec-123.nw.r.appspot.com/character/${id}`, {
         validateStatus: (status) => status === 302,
       });
       setCharacter(result.data);

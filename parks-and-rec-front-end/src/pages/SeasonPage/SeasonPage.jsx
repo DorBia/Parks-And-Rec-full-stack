@@ -14,14 +14,14 @@ const SeasonPage = () => {
   }, [id]);
 
   const loadSeason = async (id) => {
-    const result = await axios.get(`http://localhost:8080/season/${id}`, {
+    const result = await axios.get(`https://parks-and-rec-123.nw.r.appspot.com/season/${id}`, {
       validateStatus: (status) => status === 302,
     });
     setSeason(result.data);
   };
 
   const deleteSeason = async (id) => {
-    await axios.delete(`http://localhost:8080/season/${id}`);
+    await axios.delete(`https://parks-and-rec-123.nw.r.appspot.com/season/${id}`);
     navigate("/");
   };
 
@@ -44,7 +44,7 @@ const SeasonPage = () => {
   
               <div className="row justify-content-center mt-3">
                 <Link
-                  to={`/editepisode/${season?.id}`}
+                  to={`/editseason/${season?.id}`}
                   className="btn btn-outline-dark mx-2 col-3 col-md-2 p-3"
                 >
                   Edit
