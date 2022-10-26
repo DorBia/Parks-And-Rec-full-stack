@@ -20,6 +20,8 @@ function App() {
   const [ seasons, setSeasons ] = useState([]);
   const [episodes, setEpisodes] = useState([]);
   const [characters, setCharacters] = useState([]);
+  const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
     loadSeasons();
@@ -30,6 +32,7 @@ function App() {
   const loadSeasons = async () =>{
     const result = await axios.get("https://parks-and-rec-123.nw.r.appspot.com/season/all", {validateStatus: (status) => status === 302});
     setSeasons(result.data);
+    setLoading(false)
   }
 
   const loadEpisodes = async () => {
@@ -37,6 +40,7 @@ function App() {
       validateStatus: (status) => status === 302,
     });
     setEpisodes(result.data);
+    setLoading(false)
   };
 
   const loadCharacters = async () => {
@@ -44,6 +48,7 @@ function App() {
       validateStatus: (status) => status === 302,
     });
     setCharacters(result.data);
+    setLoading(false)
   };
 
   return (
@@ -74,13 +79,13 @@ function App() {
           }/>
 
           <Route path="/characters/" element={
-            <Characters characters={characters} loadCharacters={loadCharacters}/>
+            <Characters characters={characters} loadCharacters={loadCharacters} loading={loading}/>
           }/>
           <Route path="/seasons/" element={
-            <Seasons />
+            <Seasons loading={loading}/>
           }/>
           <Route path="/episodes/" element={
-            <Episodes episodes={episodes} loadEpisodes={loadEpisodes}/>
+            <Episodes episodes={episodes} loadEpisodes={loadEpisodes} loading={loading}/>
           }/>
           <Route path="/season/:id" element={
             <SeasonPage />

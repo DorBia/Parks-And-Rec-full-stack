@@ -1,31 +1,23 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
 
 
-const Seasons = () => {
-    const [ seasons, setSeasons ] = useState([]);
+const Seasons = ({seasons, loadSeasons, loading}) => {
 
   useEffect(() => {
     loadSeasons();
+    //eslint-disable-next-line
   },[])
 
-const loadSeasons = async () =>{
-  const result = await axios.get("https://parks-and-rec-123.nw.r.appspot.com/season/all" ,{
-      validateStatus: function (status) {
-          return true;
-      }
-  });
-
-  if (result.status === 302) {
-    setSeasons(result.data);
-  }
-}
-
   return (
+    <>
+    {loading && <LoadingScreen />}
+    {!loading && 
     <div>
         <button onClick={() => {console.log(seasons)}}>Click</button>
         {seasons.map(season => <p key={season.id}>Season: {season.seasonsNumber}</p>)}
-    </div>
+    </div>}
+    </>
   )
 }
 

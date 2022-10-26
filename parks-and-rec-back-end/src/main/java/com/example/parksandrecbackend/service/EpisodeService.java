@@ -3,6 +3,7 @@ package com.example.parksandrecbackend.service;
 import com.example.parksandrecbackend.data.Episode;
 import com.example.parksandrecbackend.exceptions.EpisodeNotFoundException;
 import com.example.parksandrecbackend.repository.EpisodeRepo;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class EpisodeService {
     }
 
     public List<Episode> getAllEpisodes() {
-        return episodeRepo.findAll();
+        return episodeRepo.findAll(Sort.by("episodesNumber"));
     }
 
     //    UPDATE

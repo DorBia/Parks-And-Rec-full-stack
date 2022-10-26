@@ -133,8 +133,6 @@ const CharacterForm = ({ condition, seasons, episodes }) => {
 
   return (
     <div className="container">
-    
-      <button onClick={() => console.log(character)}>click</button>
       <div className="row">
         <div className="col-md-8 offset-md-2 border rounded p-4 mt-5 shadow">
           {condition && <h2 className="text-center m-4">Edit Character</h2>}

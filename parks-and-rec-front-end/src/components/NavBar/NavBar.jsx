@@ -7,7 +7,7 @@ const NavBar = ({seasons}) => {
       <Container>
         <Navbar.Brand as={Link} to="/">Parks and Recreation</Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse id="responsive-navbar-nav">
+        <Navbar.Collapse id="responsive-navbar-nav" className="text-center">
           <Nav className="me-auto">
             <NavDropdown title="Seasons" id="collapsible-nav-dropdown">
             {seasons.map(season => <NavDropdown.Item as={Link} to={"/season/" + season.id} key={season.id}>{season.seasonsNumber}</NavDropdown.Item>)}

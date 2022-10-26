@@ -1,15 +1,18 @@
 
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
 
-const Episodes = ({episodes, loadEpisodes}) => {
+const Episodes = ({episodes, loadEpisodes, loading}) => {
 
   useEffect(() => {
     loadEpisodes();
     //eslint-disable-next-line
   },[])
 
-  return (
+  return (<>
+    {loading && <LoadingScreen />}
+    {!loading && 
     <div className="container text-center col-12 col-lg-9 col-xl-6">
       <Link to="/addepisode" className="btn btn-lg btn-outline-dark mx-2 my-3">
         Add Episode
@@ -28,7 +31,7 @@ const Episodes = ({episodes, loadEpisodes}) => {
             {episodes.map((episode) => {
               return (
                 <tr key={episode.id} className="align-middle">
-                  <td className="col-1 border-end">{episode.episodeNumber}</td>
+                  <td className="col-1 border-end">{episode.episodesNumber}</td>
 
                   <td className="col-5 border-end">
                     <img
@@ -49,7 +52,8 @@ const Episodes = ({episodes, loadEpisodes}) => {
           </tbody>
         </table>
       </div>
-    </div>
+    </div>}
+    </>
   );
 };
 

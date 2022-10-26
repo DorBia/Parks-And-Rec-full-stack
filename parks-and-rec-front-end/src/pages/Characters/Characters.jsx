@@ -1,9 +1,10 @@
 // import axios from "axios";
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
 import "./Characters.scss";
 
-const Characters = ({characters, loadCharacters}) => {
+const Characters = ({characters, loadCharacters, loading}) => {
 
   useEffect(() => {
     loadCharacters();
@@ -11,6 +12,9 @@ const Characters = ({characters, loadCharacters}) => {
   }, []);
 
   return (
+    <>
+    {loading && <LoadingScreen />}
+    {!loading && 
     <div className="container text-center">
       <Link to="/addcharacter" className="btn btn-lg btn-outline-dark mx-2 my-3">
         Add Character
@@ -49,7 +53,8 @@ const Characters = ({characters, loadCharacters}) => {
           </tbody>
         </table>
       </div>
-    </div>
+    </div>}
+    </>
   );
 };
 

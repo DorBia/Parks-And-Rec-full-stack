@@ -1,0 +1,13 @@
+.loading {
+    height: 85vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    &__spinner {
+        height: 3rem;
+        width: 3rem;
+        font-size: 2rem;
+    }
+}

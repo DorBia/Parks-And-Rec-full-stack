@@ -2,10 +2,11 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
 
 const SeasonPage = () => {
   const { id } = useParams();
-
+  const [loading, setLoading] = useState(true);
   const [season, setSeason] = useState([]);
   let navigate = useNavigate();
 
@@ -18,6 +19,7 @@ const SeasonPage = () => {
       validateStatus: (status) => status === 302,
     });
     setSeason(result.data);
+    setLoading(false);
   };
 
   const deleteSeason = async (id) => {
@@ -25,12 +27,14 @@ const SeasonPage = () => {
     navigate("/");
   };
 
-    return (
-      <div className="container py-4">
+  return (
+    <div className="container py-4">
+      {loading && <LoadingScreen />}
+      {!loading && (
         <div className="border rounded p-4 mt-2 shadow">
           <div className="row text-center">
             <div className="mx-2">
-            <h2 className="text-center display-3">
+              <h2 className="text-center display-3">
                 Season {season.seasonsNumber}
               </h2>
               <img
@@ -40,34 +44,34 @@ const SeasonPage = () => {
               />
 
               <p>{season.seasonsDescription}</p>
-              </div>
-  
-              <div className="row justify-content-center mt-3">
-                <Link
-                  to={`/editseason/${season?.id}`}
-                  className="btn btn-outline-dark mx-2 col-3 col-md-2 p-3"
-                >
-                  Edit
-                </Link>
-                <Button
-                  className="mx-2 col-3 col-md-2 p-3"
-                  variant="outline-danger"
-                  onClick={() => deleteSeason(season.id)}
-                >
-                  Delete
-                </Button>
-              </div>
-              <Button
-          variant="dark"
-          className="btn py-2 px-3col-2 col-md-1"
-          onClick={() => navigate("/episodes")}
-        >
-          ⇦
-        </Button>
+            </div>
 
+            <div className="row justify-content-center mt-3">
+              <Link
+                to={`/editseason/${season?.id}`}
+                className="btn btn-outline-dark mx-2 col-3 col-md-2 p-3"
+              >
+                Edit
+              </Link>
+              <Button
+                className="mx-2 col-3 col-md-2 p-3"
+                variant="outline-danger"
+                onClick={() => deleteSeason(season.id)}
+              >
+                Delete
+              </Button>
             </div>
           </div>
+          <Button
+              variant="dark"
+              className="btn py-2 px-3"
+              onClick={() => navigate("/episodes")}
+            >
+              ⇦
+            </Button>
         </div>
-  )};
+      )}
+    </div>
+  );
+};
 export default SeasonPage;
-  
