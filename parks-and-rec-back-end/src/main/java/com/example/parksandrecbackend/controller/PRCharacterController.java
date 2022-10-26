@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/character")
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin("https://parks-and-rec-ae5dc.web.app")
 public class PRCharacterController {
 
 
