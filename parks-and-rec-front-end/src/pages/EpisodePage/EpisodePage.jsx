@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import DeletePrompt from "../../components/DeletePrompt/DeletePrompt";
 
 import "./EpisodePage.scss";
 
@@ -9,6 +10,7 @@ const EpisodePage = () => {
   const { id } = useParams();
   let navigate = useNavigate();
   const [episode, setEpisode] = useState([]);
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     loadEpisode(id);
@@ -25,6 +27,9 @@ const EpisodePage = () => {
     await axios.delete(`https://parks-and-rec-123.nw.r.appspot.com/episode/${id}`);
     navigate("/episodes");
   };
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   const characterJSX = episode.charactersInEpisode
     ? episode.charactersInEpisode.map((character) => {
@@ -79,11 +84,12 @@ const EpisodePage = () => {
           <Button
             className="mx-2 col-3 col-md-2 p-3"
             variant="outline-danger"
-            onClick={() => deleteEpisode(episode.id)}
+            onClick={handleShow}
           >
             Delete
           </Button>
         </div>
+        <DeletePrompt show={show} handleClose={handleClose} handleDelete={deleteEpisode} id={episode.id} name="episode"/>
         <Button
           variant="dark"
           className="btn py-2 px-3"

@@ -5,7 +5,6 @@ import CharacterPage from './pages/CharacterPage/CharacterPage';
 import EpisodePage from './pages/EpisodePage/EpisodePage';
 import SeasonPage from './pages/SeasonPage/SeasonPage';
 import Characters from './pages/Characters/Characters';
-import Seasons from './pages/Seasons/Seasons';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import CharacterForm from './pages/CharacterForm/CharacterForm';
@@ -80,9 +79,6 @@ function App() {
 
           <Route path="/characters/" element={
             <Characters characters={characters} loadCharacters={loadCharacters} loading={loading}/>
-          }/>
-          <Route path="/seasons/" element={
-            <Seasons loading={loading}/>
           }/>
           <Route path="/episodes/" element={
             <Episodes episodes={episodes} loadEpisodes={loadEpisodes} loading={loading}/>

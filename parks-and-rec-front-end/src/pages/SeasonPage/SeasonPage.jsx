@@ -2,12 +2,15 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import DeletePrompt from "../../components/DeletePrompt/DeletePrompt";
 import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
 
 const SeasonPage = () => {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [season, setSeason] = useState([]);
+  const [show, setShow] = useState(false);
+
   let navigate = useNavigate();
 
   useEffect(() => {
@@ -21,6 +24,9 @@ const SeasonPage = () => {
     setSeason(result.data);
     setLoading(false);
   };
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   const deleteSeason = async (id) => {
     await axios.delete(`https://parks-and-rec-123.nw.r.appspot.com/season/${id}`);
@@ -56,16 +62,17 @@ const SeasonPage = () => {
               <Button
                 className="mx-2 col-3 col-md-2 p-3"
                 variant="outline-danger"
-                onClick={() => deleteSeason(season.id)}
+                onClick={handleShow}
               >
                 Delete
               </Button>
             </div>
+            <DeletePrompt show={show} handleClose={handleClose} handleDelete={deleteSeason} id={season.id} name="season"/>
           </div>
           <Button
               variant="dark"
               className="btn py-2 px-3"
-              onClick={() => navigate("/episodes")}
+              onClick={() => navigate("/")}
             >
               ⇦
             </Button>

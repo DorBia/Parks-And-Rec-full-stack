@@ -196,7 +196,7 @@ const CharacterForm = ({ condition, seasons, episodes }) => {
               text={"Choose Episodes"}
             />
             <ButtonsBottomRow
-              destination="/episodes"
+              destination="/characters"
               setAll={setAll}
               condition={true}
             />
